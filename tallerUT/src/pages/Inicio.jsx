@@ -12,7 +12,7 @@ function Inicio() {
 
             <div className="icon-container flex flex-col items-center justify-center"> 
                 <img src={Seguridad} alt="Icono de carro" className="w-48 h-48"></img>
-                <a href="login.html" className="bg-red-500 text-black py-2 px-28 rounded-full text-2xl mt-4">Comenzar</a>
+                <Link to="/LogIn"  className="bg-red-500 text-black py-2 px-28 rounded-full text-2xl mt-4">Comenzar</Link>
             </div>
                 <h3 className="additional-text mt-4 text-center text-3xl">¿Aún no tienes cuenta?</h3>
                 <h4 className="register-now text-red-500 text-center text-3xl">
