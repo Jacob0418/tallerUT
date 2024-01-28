@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/header'
 import Inicio from './pages/Inicio'
 import NotFound from './pages/NotFound'
+import LogIn from './pages/Login'
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Inicio/>} />
           <Route path='/*' element={<NotFound/>} />
+          <Route path='/LogIn' element={<LogIn/>} />
         </Routes>
       </main>
     </BrowserRouter>
