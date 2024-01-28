@@ -3,6 +3,7 @@ import Navbar from './components/header'
 import Inicio from './pages/Inicio'
 import NotFound from './pages/NotFound'
 import LogIn from './pages/Login'
+import VistaTrabajo from './pages/ListaTrabajos'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
           <Route path='/' element={<Inicio/>} />
           <Route path='/*' element={<NotFound/>} />
           <Route path='/LogIn' element={<LogIn/>} />
+          <Route path='/Trabajos' element={<VistaTrabajo/>} />
         </Routes>
       </main>
     </BrowserRouter>
