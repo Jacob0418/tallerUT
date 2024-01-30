@@ -8,8 +8,8 @@ import { Link } from "react-router-dom";
 function Navbar() {
 
     let Links = [
-        {name: "Servicios", link: "/"},
-        {name: "Nosotros", link: "/"}
+        {name: "Servicios", link: "/Servicios"},
+        {name: "Trabajos", link: "/Trabajos"}
     ]
 
     let [open, setOpen] = useState(false);   
@@ -35,9 +35,9 @@ function Navbar() {
                                     </li>
                                 ))
                             }
-                            <ButtonNav>
+                            <Link to={'/login'}><ButtonNav>
                                 Log In
-                            </ButtonNav>
+                            </ButtonNav></Link> 
                         </ul>
                     </div>
                 </div>

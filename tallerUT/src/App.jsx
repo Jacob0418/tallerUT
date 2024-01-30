@@ -4,6 +4,7 @@ import Inicio from './pages/Inicio'
 import NotFound from './pages/NotFound'
 import LogIn from './pages/Login'
 import VistaTrabajo from './pages/ListaTrabajos'
+import Services from './pages/Services'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <Route path='/*' element={<NotFound/>} />
           <Route path='/LogIn' element={<LogIn/>} />
           <Route path='/Trabajos' element={<VistaTrabajo/>} />
+          <Route path='/Servicios' element={<Services/>}  />
         </Routes>
       </main>
     </BrowserRouter>
