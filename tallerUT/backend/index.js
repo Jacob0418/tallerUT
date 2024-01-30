@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 const mecanicoRoutes = require('./routes/mecanicoRoutes');
+
 app.use('/mecanico', mecanicoRoutes);
 
 
