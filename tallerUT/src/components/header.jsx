@@ -3,7 +3,7 @@ import { IoCarSportOutline } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoClose } from "react-icons/io5";
 import ButtonNav from "./ButtonNav";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 function Navbar() {
 
@@ -15,7 +15,7 @@ function Navbar() {
     let [open, setOpen] = useState(false);   
 
     return (
-            <header>
+            <div>
                 <div className="shadow-md w-full top-0 left-0 sticky">
                     <div className="md:flex items-center justify-between bg-red-500 py-4 md:px-10 px-7">
                         <div className=" font-bold text-2xl cursor-pointer flex items-center text-white" >
@@ -41,7 +41,9 @@ function Navbar() {
                         </ul>
                     </div>
                 </div>
-            </header>
+                <Outlet/>
+            </div>
+            
     )
 }
 
