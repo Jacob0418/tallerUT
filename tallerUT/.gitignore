@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 
 
-# Certofocado SSl
+# Certificado SSl
 localhost-key.pem
 localhost.pem
