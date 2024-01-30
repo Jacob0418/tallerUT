@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function CardsTrabajo() {
     return (
@@ -13,7 +14,7 @@ function CardsTrabajo() {
                 <p className="ml-2"><span className="font-medium text-lg">Costo:</span> $350</p>
                 <span className="flex flex-row gap-3 items-center justify-center mt-3">
                     <button className="border-2 p-2 rounded-[5px_5px_5px_5px] border-red-500 bg-red-500 text-white font-medium hover:-translate-y-1">Finalizar</button>
-                    <button className="border-2 p-2 rounded-[5px_5px_5px_5px] border-red-500 bg-red-500 text-white font-medium hover:-translate-y-1">Actualizar</button>
+                    <Link to={'/Actualizar'}><button className="border-2 p-2 rounded-[5px_5px_5px_5px] border-red-500 bg-red-500 text-white font-medium hover:-translate-y-1">Actualizar</button></Link>
                 </span>
             </div>
         </>
