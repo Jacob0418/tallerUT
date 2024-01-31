@@ -18,7 +18,7 @@ function LogIn() {
                     <RiToolsFill className=" size-14 mb-7"/>
                     <label id="user" className="mb-2 font-medium">Usuario</label>
                     <input name="user" id="user" placeholder="Ingrese un nombre" type="text" required className=" border-none focus:outline-red-500 focus:outline-none rounded-[5px_5px_5px_5px] p-1 w-52 mb-5" />
-                    <label id="email" className="mb-2 font-medium">Correo</label>
+                    <label id="email" className="mb-2 font-medium">Apellido</label>
                     <input name="email" id="email" placeholder="Ingrese un correo" type="email" required className=" border-none focus:outline-red-500 focus:outline-none rounded-[5px_5px_5px_5px] p-1 w-52 mb-5"  />
                     <label id="password" className="font-medium mb-2">Contraseña</label>
                     <span className=" relative w-full max-w-[300px]">

@@ -5,8 +5,8 @@ function UserRegister() {
     <>
       <div className="mt-8 mx-4"> 
         <div className="flex items-center justify-center h-screen">
-          <div className="max-w-2xl p-12 bg-white rounded-md shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Registro de Usuario</h2>
+          <div className="max-w-2xl p-12 bg-white rounded-md shadow-md border border-red-500">
+            <h2 className="text-2xl text-red-500 font-bold mb-4">Registro de Usuario</h2>
             <form>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-600">Nombre:</label>
