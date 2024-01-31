@@ -18,10 +18,16 @@ app.get('/', (req, res) => {
 });
 
 const mecanicoRoutes = require('./routes/mecanicoRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const piezaRoutes = require('./routes/piezaRoutes');
+const pinturaRoutes = require('./routes/pinturaRoutes');
 
 app.use('/mecanico', mecanicoRoutes);
+app.use('/admin', adminRoutes);
+app.use('/pieza', piezaRoutes);
+app.use('/pintura', pinturaRoutes);
 
 
 app.listen(process.env.PORT || 3000, () => {
-    console.log('Servidor corriendo por el puerto 3____')
+    console.log(`Servidor corriendo por el puerto ${process.env.PORT || 3000}`)
 });
