@@ -1,38 +1,85 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
+import axios from '../api/axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 function UserRegister() {
+
+  const navigate = useNavigate();
+
+  const handleRegistrationComplete = () => {
+      navigate.push("/LogIn");
+  };
+  
+  const [register, setRegister] = useState({
+    nombre: '',
+    apellido: '',
+    no_telefonico: '',
+    nomina: '',
+    password: '',
+    confirmPassword: ''
+});
+
+  const handleInputChange = (event) => {
+    setRegister({
+      ...register,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if(register.password !== register.confirmPassword) {
+      console.error('Las contraseñas no coinciden');
+      return;
+    }
+
+    axios.post('/mecanico', {
+      nombre: register.nombre,
+      apellido: register.apellido,
+      no_telefonico: register.no_telefonico,
+      nomina: register.nomina,
+      password: register.password
+    })
+    .then(response => {
+      console.log('Registro exitoso: ', response.data);
+    })
+    .catch(error => {
+      console.error('Error al registrar: ', error)
+    });
+  };
+
   return (
     <>
       <div className="mt-8 mx-4"> 
         <div className="flex items-center justify-center h-screen">
           <div className="max-w-2xl p-12 bg-white rounded-md shadow-md border border-red-500">
             <h2 className="text-2xl text-red-500 font-bold mb-4">Registro de Usuario</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-600">Nombre:</label>
-                <input type="text" className="mt-1 p-2 w-full border rounded-full" />
+                <input type="text" name="nombre" className="mt-1 p-2 w-full border rounded-full" value={register.nombre} onChange={handleInputChange} />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-600">Apellidos:</label>
-                <input type="text" className="mt-1 p-2 w-full border rounded-full" />
+                <label className="block text-sm font-medium text-gray-600">Apellido:</label>
+                <input type="text" name='apellido' className="mt-1 p-2 w-full border rounded-full" value={register.apellido} onChange={handleInputChange} />
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-600">Número Telefónico:</label>
-                <input type="tel" className="mt-1 p-2 w-full border rounded-full" />
+                <input type="text" name="no_telefonico" className="mt-1 p-2 w-full border rounded-full" value={register.no_telefonico} onChange={handleInputChange} />
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-600">Número de Nómina:</label>
-                <input type="text" className="mt-1 p-2 w-full border rounded-full" />
+                <input type="text" name="nomina" className="mt-1 p-2 w-full border rounded-full" value={register.nomina} onChange={handleInputChange}/>
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-600">Contraseña:</label>
-                <input type="password" className="mt-1 p-2 w-full border rounded-full" />
+                <input type="password" name="password" className="mt-1 p-2 w-full border rounded-full" value={register.password} onChange={handleInputChange}/>
               </div>
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-600">Repetir Contraseña:</label>
-                <input type="password" className="mt-1 p-2 w-full border rounded-full" />
+                <input type="password" name="confirmPassword" className="mt-1 p-2 w-full border rounded-full" value={register.confirmPassword} onChange={handleInputChange}/>
               </div>
-              <button type="submit" className="bg-red-500 text-white p-2 rounded-full w-full">
+              <button type="submit" className="bg-red-500 text-white p-2 rounded-full w-full" onClick={handleRegistrationComplete}>
                 Registrarse
               </button>
             </form>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from '../api/axios'
 
 function RegistroTrabajo() {
   return (
@@ -29,7 +30,7 @@ function RegistroTrabajo() {
               <input name="horas" id="horas" placeholder="Horas de trabajo" type="text" required className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
               <input name="costoFijo" id="costoFijo" placeholder="Costo Fijo" type="text" required className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
               <input name="costoTotal" id="costoTotal" placeholder="Costo Total" type="text" required className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
-              <input name="evidencia" id="evidencia" placeholder="Foto de evidencia" type="file" accept="image/*" required className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
+              
             </div>
           </div>
           <div className="flex justify-between">

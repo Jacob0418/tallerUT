@@ -1,5 +1,5 @@
-import Cookies from "js-cookies";
-import { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import Cookies from "js-cookie";
 import {
   loginAdmin,
   verifyTokenAdmin,
@@ -23,37 +23,38 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticatedMecanico, setIsAuthenticatedMecanico] = useState(false);
   const [isAuthenticatedAdmin, setIsAuthenticatedAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState([]);
 
-  const loginReqAdmin = async (admin) => {
+  const loginReqAdmin = async (adminData) => {
     try {
-      const res = await loginAdmin(admin);
+      const res = await loginAdmin(adminData);
+      Cookies.set("token", res.data.token); // Asumiendo que res.data contiene un token
       setIsAuthenticatedAdmin(true);
       setAdmin(res.data);
+      setError([]);
     } catch (error) {
-      console.log(error);
-      const errorsToSet = Array.isArray(error.response.data)
-        ? error.response.data
-        : [error.response.data.message];
-
-      setError(errorsToSet);
+      handleError(error);
     }
   };
 
-  const loginReqMecanico = async (mecanico) => {
+  const loginReqMecanico = async (mecanicoData) => {
     try {
-      const res = await loginMecanico(mecanico);
+      const res = await loginMecanico(mecanicoData);
+      Cookies.set("token", res.data.token); // Asumiendo que res.data contiene un token
       setIsAuthenticatedMecanico(true);
       setMecanico(res.data);
+      setError([]);
     } catch (error) {
-      console.log(error);
-      const errorsToSet = Array.isArray(error.response.data)
-        ? error.response.data
-        : [error.response.data.message];
-
-      setError(errorsToSet);
+      handleError(error);
     }
+  };
+
+  const handleError = (error) => {
+    console.log(error);
+    const errorsToSet = Array.isArray(error.response?.data)
+      ? error.response.data
+      : [error.response?.data?.message || "Un error ha ocurrido"];
+    setError(errorsToSet);
   };
 
   const logout = () => {
@@ -66,71 +67,60 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const cookies = Cookies.get();
+      const token = Cookies.get("token");
 
-      if (!cookies.token) {
-        setIsAuthenticatedAdmin(false);
-        setIsAuthenticatedMecanico(false);
-        setAdmin(null);
-        setMecanico(null);
+      if (!token) {
+        logout();
         setLoading(false);
         return;
       }
 
       try {
-        const resAdmin = await verifyTokenAdmin(cookies.token);
+        const resAdmin = await verifyTokenAdmin(token);
         if (resAdmin.data) {
-            setIsAuthenticatedAdmin(true);
-            setAdmin(resAdmin.data);
-            setIsAuthenticatedMecanico(false);//Asegura desactivar la autenticación
-            setMecanico(null);//Setea la info
-        } else {
-            setIsAuthenticatedAdmin(false);
-            setAdmin(null);
+          setIsAuthenticatedAdmin(true);
+          setAdmin(resAdmin.data);
+          setIsAuthenticatedMecanico(false);
+          setMecanico(null);
         }
       } catch (error) {
-        console.error('Error al verificar el token: ', error)
+        console.error('Error al verificar el token para admin: ', error);
         setIsAuthenticatedAdmin(false);
         setAdmin(null);
       }
 
       try {
-        const resMecanico = await verifyTokenMecanico(cookies.token);
+        const resMecanico = await verifyTokenMecanico(token);
         if (resMecanico.data) {
-            setIsAuthenticatedMecanico(true);
-            setMecanico(resAdmin.data);
-            setIsAuthenticatedAdmin(false);//Asegura desactivar la autenticación
-            setAdmin(null);//Setea la info
-        } else {
-            setIsAuthenticatedMecanico(false);
-            setMecanico(null);
+          setIsAuthenticatedMecanico(true);
+          setMecanico(resMecanico.data);
+          setIsAuthenticatedAdmin(false);
+          setAdmin(null);
         }
       } catch (error) {
-        console.error('Error al verificar el token: ', error)
+        console.error('Error al verificar el token para mecánico: ', error);
         setIsAuthenticatedMecanico(false);
         setMecanico(null);
       }
 
       setLoading(false);
-
     }
 
     checkLogin();
-
   }, []);
 
   useEffect(() => {
     if (error.length > 0) {
-        const timer = setTimeout(() => {
-            setError([]);
-        }, 5000);
-        return () => clearTimeout(timer);
+      const timer = setTimeout(() => {
+        setError([]);
+      }, 5000);
+      return () => clearTimeout(timer);
     }
   }, [error]);
 
   return (
     <AuthContext.Provider
-    value={{
+      value={{
         loginReqAdmin,
         loginReqMecanico,
         error,
@@ -140,8 +130,10 @@ export const AuthProvider = ({ children }) => {
         mecanico,
         loading,
         logout,
-    }}
-    ></AuthContext.Provider>
-  )
-
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
+

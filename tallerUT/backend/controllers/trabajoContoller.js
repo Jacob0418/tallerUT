@@ -1,7 +1,7 @@
 const db = require('../db');
 
 const obtenerTrabajo = (req, res) => {
-    db.query('SELECT * FROM trabajos', (error, results) => {
+    db.query('SELECT t.id_trabajo, t.id_mecanico_id,t.descripcion_revision,t.modelo_vehiculo,t.horas,t.id_status_id,t.nombre_pintura,t.nombre_de_pieza,t.precio_fijo_trabajo, t.precio_total_trabajo, m.nombre AS nombre_mecanico, e.tipo_estatus FROM trabajos t INNER JOIN mecanico m ON t.id_mecanico_id = m.id_mecanico INNER JOIN estatus e ON t.id_status_id = e.id_status;', (error, results) => {
         if (error) {
             console.error('Error al obtener trabajo', error);
             res.status(500).json({
@@ -29,7 +29,7 @@ const obtenerTrabajocoById = (req, res) => {
 
 const actualizarTrabajo = (req, res) => {
     const id = req.params.id;
-    const { nombre_trabajo, precio_trabajo  } = req.body;
+    const { descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_, precio_trabajo,   } = req.body;
 
     db.query('UPDATE trabajos SET nombre_trabajo = ?, precio_trabajo = ? WHERE id_trabajo = ?', [nombre_trabajo, precio_trabajo, id], (error, results) => {
         if (error) {
