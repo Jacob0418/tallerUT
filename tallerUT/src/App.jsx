@@ -28,6 +28,7 @@ function App() {
           <Route path="/Actualizar/:id_trabajo" element={<Actualizar />} />
           <Route element={<PrivateRoutes/>} >
 
+          <Route element={<PrivateRoutes/>} >
           </Route>
           <Route path='/*' element={<NotFound />} />
 

@@ -79,7 +79,7 @@ const loginMecanico = (req, res) => {
             );
 
             if (correctPassword) {
-                const token = jwt.sign({ id: response.id }, TOKEN_SECRET, {
+                const token = jwt.sign({ id: response.id_mecanico }, TOKEN_SECRET, {
                     expiresIn: '1d'
                 });
 
