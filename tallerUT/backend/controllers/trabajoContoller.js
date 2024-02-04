@@ -29,9 +29,9 @@ const obtenerTrabajocoById = (req, res) => {
 
 const actualizarTrabajo = (req, res) => {
     const id = req.params.id;
-    const { id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza,precio_fijo_trabajo, precio_trabajo } = req.body;
+    const { id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza,precio_fijo_trabajo, precio_total_trabajo } = req.body;
 
-    db.query('UPDATE trabajos SET id_mecanico_id = ?, descripcion_revision = ?, modelo_vehiculo = ?, horas = ?, id_status_id = ?, nombre_pintura = ?, nombre_de_pieza = ?, precio_fijo_trabajo = ?, precio_trabajo = ? WHERE id_trabajo = ?', [id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza,precio_fijo_trabajo, precio_trabajo], (error, results) => {
+    db.query('UPDATE trabajos SET id_mecanico_id = ?, descripcion_revision = ?, modelo_vehiculo = ?, horas = ?, id_status_id = ?, nombre_pintura = ?, nombre_de_pieza = ?, precio_fijo_trabajo = ?, precio_total_trabajo = ? WHERE id_trabajo = ?', [id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza,precio_fijo_trabajo, precio_total_trabajo, id], (error, results) => {
         if (error) {
             res.status(500).json({ error: 'Error al actualizar' })
         } else {
@@ -41,9 +41,9 @@ const actualizarTrabajo = (req, res) => {
 };
 
 const insertarTrabajo = (req, res) => {
-    const { id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza, precio_fijo_trabajo, precio_trabajo } = req.body;
+    const { id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza, precio_fijo_trabajo, precio_total_trabajo } = req.body;
 
-    db.query('INSERT INTO trabajos (id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza, precio_fijo_trabajo, precio_trabajo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza, precio_fijo_trabajo, precio_trabajo], (error, results) => {
+    db.query('INSERT INTO trabajos (id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza, precio_fijo_trabajo, precio_total_trabajo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza, precio_fijo_trabajo, precio_total_trabajo], (error, results) => {
         if (error) {
             return res
             .status(500).json({ error: 'No se creo el trabajo'});
