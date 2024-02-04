@@ -22,11 +22,11 @@ function App() {
           <Route path='/LogIn' element={<LogIn />} />
           <Route path='/' element={<Inicio />} />
           <Route path='/UserRegister' element={<UserRegister />} />
-          <Route element={<PrivateRoutes/>} >
           <Route path='/Trabajos' element={<VistaTrabajo />} /> 
           <Route path='/RegistroTrabajo' element={<RegistroTrabajo />} />
           <Route path='/Servicios' element={<Services />} />
           <Route path="/Actualizar/:id_trabajo" element={<Actualizar />} />
+          <Route element={<PrivateRoutes/>} >
 
           </Route>
           <Route path='/*' element={<NotFound />} />

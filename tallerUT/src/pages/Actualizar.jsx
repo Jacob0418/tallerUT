@@ -45,11 +45,15 @@ function Actualizar() {
                         <div className="flex flex-wrap -mx-2">
                             <div className="w-1/2 px-1">
                                 <label htmlFor="email">Mecánico</label>
-                                <select id="email" name="mecanico" value={trabajoData.nombre_mecanico} onChange={handleChange} className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4">
-                                    <option>{trabajoData.nombre_mecanico }</option>
-                                </select>
-                                <input id="pintura" name="pintura" placeholder="Ingrese pintura" type="text" value={trabajoData.pintura} onChange={handleChange} className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
-                                {/* Otros campos del formulario aquí... */}
+                                <input id="id_mecanico_id" name="id_mecanico_id" value={trabajoData.id_mecanico_id} onChange={handleChange} className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
+                                <label htmlFor="pintura">Pintura</label>
+                                <input id="nombre_pintura" name="nombre_pintura" placeholder="Ingrese pintura" type="text" value={trabajoData.nombre_pintura} onChange={handleChange} className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
+                                <label htmlFor="estadoTrabajo">Pieza </label>
+                                <input id="nombre_de_pieza" name="nombre_de_pieza" placeholder="Ingrese la pieza" type="text" value={trabajoData.nombre_de_pieza} onChange={handleChange} className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
+                                <label htmlFor="estadoTrabajo">Descripcion del trabajo </label>
+                                <textarea id="descripcion_revision" name="descripcion_revision" placeholder="Descripción del trabajo" type="text" value={trabajoData.descripcion_revision} onChange={handleChange} className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4 h-24" />
+                                <label htmlFor="">Modelo del Vehiculo </label>
+                                <input id="modelo_vehiculo" name="modelo_vehiculo" placeholder="Modelo del vehículo" type="text" value={trabajoData.modelo_vehiculo} onChange={handleChange} className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
                             </div>
                             <div className="w-1/2 px-1">
                                 <label htmlFor="estadoTrabajo">Estado del trabajo</label>
@@ -57,8 +61,12 @@ function Actualizar() {
                                     <option>Pendiente</option>
                                     <option>Finalizado</option>
                                 </select>
+                                <label htmlFor="horaTrabajo">Horas del trabajo</label>
                                 <input id="horas" name="horas" placeholder="Horas de trabajo" type="text" value={trabajoData.horas} onChange={handleChange} className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
-                                {/* Otros campos del formulario aquí... */}
+                                <label htmlFor="cosotFijo">Costo fijo</label>
+                                <input id="precio_fijo_trabajo" name="precio_fijo_trabajo" placeholder="Costo fijo" type="text" value={trabajoData.precio_fijo_trabajo} onChange={handleChange} className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
+                                <label htmlFor="horaTrabajo">Precio total</label>
+                                <input name="precio_total_trabajo" id="precio_total_trabajo" placeholder="Costo Total" type="text" value={trabajoData.precio_total_trabajo}  onChange={handleChange} className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4" />
                             </div>
                         </div>
                         <div className="flex justify-center">
