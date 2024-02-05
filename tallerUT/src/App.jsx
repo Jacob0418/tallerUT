@@ -12,6 +12,10 @@ import { AuthProvider } from "./api/context/AuthContext";
 import RegistroTrabajo from './pages/RegistroTrabajo';
 import PrivateRoutes from './privateRoutes/privateRoutes';
 import LogInF from './pages/LogInMec';
+import RegistroReparacion from './pages/RegistroReparacion';
+import VistaReparacion from './pages/ListaReparaciones';
+import ActualizarReparacion from './pages/ActualizarReparacion';
+
 
 function App() {
   return (
@@ -29,6 +33,10 @@ function App() {
           <Route path='/RegistroTrabajo' element={<RegistroTrabajo />} />
           <Route path='/Servicios' element={<Services />} />
           <Route path="/Actualizar/:id_trabajo" element={<Actualizar />} />
+          <Route path='/RegistroReparacion' element={<RegistroReparacion />} />
+          <Route path='/Reparaciones' element={<VistaReparacion />} />
+          <Route path='ActualizarReparacion/:id_reparacion' element={<ActualizarReparacion/>} />
+
           </Route>
           <Route path='/*' element={<NotFound />} />
 

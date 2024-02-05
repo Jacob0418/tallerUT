@@ -105,16 +105,14 @@ function RegistroTrabajo() {
             </div>
             <div className="w-1/2 px-1">
               <label htmlFor="estadoTrabajo">Estado del trabajo</label>
-              <select
-                id="estadoTrabajo"
-                name="estadoTrabajo"
-                value={trabajoData.estadoTrabajo}
+              <input
+                id="id_status_id"
+                name="id_status_id"
+                value={trabajoData.id_status_id}
                 onChange={handleChange}
                 className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
               >
-                <option>Pendiente</option>
-                <option>Finalizado</option>
-              </select>
+              </input>
               <label htmlFor="horas">Horas del trabajo</label>
               <input
                 id="horas"
