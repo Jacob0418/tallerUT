@@ -11,6 +11,7 @@ import Services from './pages/Services'
 import { AuthProvider } from "./api/context/AuthContext";
 import RegistroTrabajo from './pages/RegistroTrabajo';
 import PrivateRoutes from './privateRoutes/privateRoutes';
+import LogInF from './pages/LogInMec';
 
 function App() {
   return (
@@ -19,16 +20,15 @@ function App() {
       <Navbar />
       <main>
         <Routes>
+          <Route path='/LoginF' element={<LogInF/>} />
           <Route path='/LogIn' element={<LogIn />} />
           <Route path='/' element={<Inicio />} />
           <Route path='/UserRegister' element={<UserRegister />} />
-          <Route path='/Trabajos' element={<VistaTrabajo />} /> 
+          <Route element={<PrivateRoutes/>} >
+          <Route path='/Trabajos' element={<VistaTrabajo />} />
           <Route path='/RegistroTrabajo' element={<RegistroTrabajo />} />
           <Route path='/Servicios' element={<Services />} />
           <Route path="/Actualizar/:id_trabajo" element={<Actualizar />} />
-          <Route element={<PrivateRoutes/>} >
-
-          <Route element={<PrivateRoutes/>} >
           </Route>
           <Route path='/*' element={<NotFound />} />
 

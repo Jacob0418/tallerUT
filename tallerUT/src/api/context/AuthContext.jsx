@@ -9,13 +9,7 @@ import {
 
 export const AuthContext = createContext();
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("No está trabajando con AuthProvider");
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [admin, setAdmin] = useState(null);
@@ -49,14 +43,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleError = (error) => {
-    console.log(error);
-    const errorsToSet = Array.isArray(error.response?.data)
-      ? error.response.data
-      : [error.response?.data?.message || "Un error ha ocurrido"];
-    setError(errorsToSet);
-  };
-
   const logout = () => {
     Cookies.remove("token");
     setIsAuthenticatedAdmin(false);
@@ -65,10 +51,16 @@ export const AuthProvider = ({ children }) => {
     setMecanico(null);
   };
 
+  const handleError = (error) => {
+    const errorsToSet = Array.isArray(error.response?.data)
+      ? error.response.data
+      : [error.response?.data?.message || "Un error ha ocurrido"];
+    setError(errorsToSet);
+  };
+
   useEffect(() => {
     async function checkLogin() {
       const token = Cookies.get("token");
-
       if (!token) {
         logout();
         setLoading(false);
@@ -76,12 +68,13 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const resAdmin = await verifyTokenAdmin(token);
+        const resAdmin = await verifyTokenAdmin();
         if (resAdmin.data) {
           setIsAuthenticatedAdmin(true);
           setAdmin(resAdmin.data);
-          setIsAuthenticatedMecanico(false);
-          setMecanico(null);
+        } else {
+          setIsAuthenticatedAdmin(false);
+          setAdmin(null);
         }
       } catch (error) {
         console.error('Error al verificar el token para admin: ', error);
@@ -90,12 +83,13 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const resMecanico = await verifyTokenMecanico(token);
+        const resMecanico = await verifyTokenMecanico();
         if (resMecanico.data) {
           setIsAuthenticatedMecanico(true);
           setMecanico(resMecanico.data);
-          setIsAuthenticatedAdmin(false);
-          setAdmin(null);
+        } else {
+          setIsAuthenticatedMecanico(false);
+          setMecanico(null);
         }
       } catch (error) {
         console.error('Error al verificar el token para mecánico: ', error);
@@ -108,15 +102,6 @@ export const AuthProvider = ({ children }) => {
 
     checkLogin();
   }, []);
-
-  useEffect(() => {
-    if (error.length > 0) {
-      const timer = setTimeout(() => {
-        setError([]);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
 
   return (
     <AuthContext.Provider
@@ -136,4 +121,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 function LogIn() {
   const {
-    loginReqMecanico, // Usar solo la función de inicio de sesión para mecánicos
+    loginReqMecanico,
     isAuthenticatedMecanico,
     error: signinErrors,
   } = useAuth();
@@ -22,7 +22,7 @@ function LogIn() {
 
   useEffect(() => {
     if (isAuthenticatedMecanico) {
-      navigate('/');
+      navigate('/trabajos');
     } else {
       navigate('/login');
     }
@@ -30,15 +30,15 @@ function LogIn() {
 
   const onSubmit = async (data) => {
     try {
-      await loginReqMecanico({
-        nombre: data.nombre,
+      await loginReqMecanico ({
+        email: data.email,
         password: data.password,
       });
-      // Redireccionar al usuario tras un inicio de sesión exitoso, si es necesario
-      navigate('/'); // Ajusta según sea necesario
+  
+      navigate('/servicios');
     } catch (error) {
       console.log('Error al realizar la solicitud de inicio de sesión de mecánico', error);
-      // Maneja el error, actualiza el estado si es necesario para mostrar mensajes de error
+      
     }
   };
 
@@ -65,16 +65,16 @@ function LogIn() {
             </div>
           ))}
           <div className="flex flex-col items-center">
-            <label className="mb-2 font-medium">Nombre</label>
+            <label className="mb-2 font-medium">Correo</label>
             <input
-              name="nombre"
+              name="email"
               placeholder="Ingrese un nombre"
-              type="text"
-              {...register("nombre", { required: true })}
+              type="email"
+              {...register("email", { required: true })}
               className="border-none focus:outline-red-500 focus:outline-none rounded-[5px_5px_5px_5px] p-1 w-52 mb-5"
             />
-            {errors.nombre && (
-              <p className="text-red-600"> Nombre es obligatorio</p>
+            {errors.email && (
+              <p className="text-red-600"> Correo es obligatorio</p>
             )}
           </div>
 
@@ -107,5 +107,3 @@ function LogIn() {
 }
 
 export default LogIn;
-
-

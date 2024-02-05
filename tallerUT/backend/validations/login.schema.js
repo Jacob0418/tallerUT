@@ -3,6 +3,7 @@ const { z } = require('zod');
 const registerSchema = z.object({
     nombre: z.string({ required_error: 'Nombre obligatorio' }),
     apellido: z.string({ required_error: 'Apellido obligatorio'}),
+    email: z.string({ required_error: 'Correo obligatorio' }),
     nomina: z.string({ required_error: 'Nómina obligatoria' }),
     no_telefonico: z.string({ required_error: 'Número obligatorio' }),
     password: z.string({ required_error: 'Contraseña obligatoria' })
@@ -10,7 +11,7 @@ const registerSchema = z.object({
 });
 
 const loginSchema = z.object({
-    nombre: z.string({ required_error: 'Usuario no válido, ingrese una válido' }),
+    email: z.string({ required_error: 'Correo no válido, ingrese una válido' }),
     password: z.string({ required_error: 'Contraseña no válida, ingrese una válida' })
     .min(5, { message: 'La contraseña debe ser mínimo de 5 caracteres' })
 });

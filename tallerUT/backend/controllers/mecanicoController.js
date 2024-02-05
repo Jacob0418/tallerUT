@@ -1,7 +1,7 @@
 const db = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const TOKEN_SECRET = process.env.TOKEN;
+require('dotenv').config();
 
 const obtenerMecanico = (req, res) => {
     db.query('SELECT * FROM mecanico', (error, results) => {
@@ -21,7 +21,7 @@ const obtenerMecanicoById = (req, res) => {
 
     db.query('SELECT * FROM mecanico WHERE id_mecanico = ?', [id], (error, results) => {
         if (error) {
-            res.status(500).json({ error: 'Error al obtener al mecánico'});
+            res.status(500).json({ error: 'Error al obtener al mecánico' });
         } else if (results.length === 0) {
             res.status(404).json({ message: 'No se obtuvo al mecánico' })
         } else {
@@ -32,28 +32,28 @@ const obtenerMecanicoById = (req, res) => {
 
 
 const insertarMecanico = (req, res) => {
-    const { nombre, apellido, password, nomina, no_telefonico } = req.body;
-    
+    const { nombre, apellido, email, password, nomina, no_telefonico } = req.body;
+
     const encryptation = bcrypt.hashSync(password, 10);
-    
-    db.query('INSERT INTO mecanico (nombre, apellido, password, nomina, no_telefonico) VALUES (?, ?, ?, ?, ?)', [nombre, apellido, encryptation, nomina, no_telefonico], (error, results) => {
+
+    db.query('INSERT INTO mecanico (nombre, apellido, email, password, nomina, no_telefonico) VALUES (?, ?, ?, ?, ?, ?)', [nombre, apellido, email, encryptation, nomina, no_telefonico], (error, results) => {
         if (error) {
             return res
-            .status(500).json({ error: 'No se creo mecánico'});
+                .status(500).json({ error: 'No se creo mecánico' });
         } else {
             return res
-            .status(201).json({ message: 'Mécanico creado exitosamente' });
+                .status(201).json({ message: 'Mécanico creado exitosamente' });
         }
     });
 };
 
 const actualizarMecanico = (req, res) => {
     const id = req.params.id;
-    const { nombre, apellido, password, nomina, no_telefonico } = req.body;
+    const { nombre, email, apellido, password, nomina, no_telefonico } = req.body;
 
     const encryptation = bcrypt.hashSync(password, 10);
 
-    db.query('UPDATE mecanico SET nombre = ?, apellido = ?, password = ?, nomina = ?, no_telefonico = ? WHERE id_mecanico = ?', [nombre, apellido, encryptation, nomina, no_telefonico, id], (error, results) => {
+    db.query('UPDATE mecanico SET nombre = ?, email = ?, apellido = ?, password = ?, nomina = ?, no_telefonico = ? WHERE id_mecanico = ?', [nombre, email,  apellido, encryptation, nomina, no_telefonico, id], (error, results) => {
         if (error) {
             res.status(500).json({ error: 'Error al actualizar' })
         } else {
@@ -63,75 +63,103 @@ const actualizarMecanico = (req, res) => {
 };
 
 const loginMecanico = (req, res) => {
-    const { nombre, password } = req.body;
+    const { email, password } = req.body;
 
-    db.query('SELECT * FROM mecanico WHERE nombre = ?', [nombre], (error, results) => {
-        if (error) {
-            res.status(500).json([ 'Error al obtener mecánico: ' + nombre ]);
-        } else if (results.length === 0) {
-            res.status(404).json([ 'No se obtuvo mecánico: ' + nombre ]);
-        } else {
-            const response = results[0];
 
-            const correctPassword = bcrypt.compareSync(
-                password,
-                response.password
-            );
-
-            if (correctPassword) {
-                const token = jwt.sign({ id: response.id_mecanico }, TOKEN_SECRET, {
-                    expiresIn: '1d'
-                });
-
-                res.cookie('token', token, {
-                    SameSite: 'None',
-                    secure: true
-                });
-
-                res.json({ message: 'Login Correcto', token: token });
-            } else {
-                console.log(correctPassword);
-                res.status(400).json(['Contraseña incorrecta']);
-            }
-        }
-    })
-};
-
-const verifyToken = (req, res) => {
-    const { token } = req.cookies;
-
-    if (!token) {
-        return res.json({ authenticated: false });
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Correo y contraseña son requeridos' });
     }
 
-    jwt.verify(token, TOKEN_SECRET, async(error, user) => {
-        if (error) {
-            return res.sendStatus(401)
-        }
+    db.query('SELECT * FROM mecanico WHERE email = ?', [email], (err, results) => {
+        if (err) {
+            res.status(500).json({ message: 'Error al obtener el mecánico: ' + email });
+        } else if (results.length === 0) {
+            res.status(404).json({ message: 'No se encontró al mecánico: ' + email });
+        } else {
+            const mecanico = results[0];
 
-        const id = user.id;
-        db.query('SELECT * FROM mecanico WHERE id_mecanico = ?', [id],
-        async(error, results) => {
-            if (error) {
-                res.status(500).json({ message: 'Token no verificado' });
-            } else if (results.length === 0) {
-                res.sendStatus(401);
+            const correctPassword = bcrypt.compare(password, mecanico.password);
+            // console.log("Contraseña recibida:", password);
+            // console.log("Hash de contraseña en DB:", mecanico.password);
+
+
+            if (correctPassword) {
+                const token = jwt.sign({ id: mecanico.id_mecanico }, process.env.TOKEN, { expiresIn: '5d' });
+                res.cookie('token', token, { httpOnly: true });
+                res.json({
+                    message: 'Inicio de sesión correcto',
+                    token,
+                    id: mecanico.id_mecanico,
+                    nombre: mecanico.nombre,
+                    email: mecanico.email,
+                    no_telefonico: mecanico.no_telefonico,
+                    nomina: mecanico.nomina,
+                });
             } else {
-                const userInfo = results[0];
-                    return res.json({
-                    id: userInfo.id_mecanico,
-                    nombre: userInfo.nombre,
-                    apellido: userInfo.apellido,
-                })
+                res.status(400).json({ message: 'Contraseña incorrecta' });
             }
-        })
-    })
+        }
+    });
 };
+
+
+const verifyToken = (req, res, next) => {
+    const token = req.cookies.token; // Asegúrate de que estás usando un middleware de cookies como cookie-parser
+
+    if (!token) {
+        return res.status(401).json({ message: 'Acceso denegado' });
+    }
+
+    try {
+        const verified = jwt.verify(token, process.env.TOKEN);
+        req.user = verified;
+        next();
+    } catch (error) {
+        res.status(400).json({ message: 'Token no válido' });
+    }
+};
+
+const reauthenticate = (req, res) => {
+    const { nombre, password } = req.body;
+
+
+    if (!nombre || !password) {
+        return res.status(400).json({ message: 'Nombre y contraseña son requeridos' });
+    }
+
+    db.query('SELECT * FROM mecanico WHERE nombre = ?', [nombre], (err, results) => {
+        if (err) {
+            res.status(500).json({ message: 'Error al obtener el mecánico: ' + nombre });
+        } else if (results.length === 0) {
+            res.status(404).json({ message: 'No se encontró al mecánico: ' + nombre });
+        } else {
+            const mecanico = results[0];
+
+            const correctPassword = bcrypt.compareSync(password, mecanico.password);
+
+            if (correctPassword) {
+                const newToken = jwt.sign({ id: mecanico.id_mecanico }, process.env.TOKEN, { expiresIn: '5d' });
+                res.cookie('token', newToken, { httpOnly: true });
+                res.json({
+                    message: 'Reautenticación exitosa',
+                    newToken,
+                    id: mecanico.id_mecanico,
+                    nombre: mecanico.nombre,
+                    no_telefonico: mecanico.no_telefonico,
+                    nomina: mecanico.nomina,
+                });
+            } else {
+                res.status(400).json({ message: 'Contraseña incorrecta' });
+            }
+        }
+    });
+};
+
 
 const logoutMecanico = (req, res) => {
     res.clearCookie('token');
 
-    res.json({ message: 'Sesión Cerrada' })
+    res.json({ message: 'Sesión cerrada' });
 };
 
 const eliminarMecanico = (req, res) => {
@@ -155,4 +183,5 @@ module.exports = {
     loginMecanico,
     verifyToken,
     logoutMecanico,
+    reauthenticate,
 }

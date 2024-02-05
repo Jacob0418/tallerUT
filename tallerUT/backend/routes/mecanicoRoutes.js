@@ -12,5 +12,7 @@ router.put('/:id', mecanicoController.actualizarMecanico);
 router.post('/',validateSchema(registerSchema), mecanicoController.insertarMecanico);
 router.delete('/:id', mecanicoController.eliminarMecanico);
 router.post('/logout', mecanicoController.logoutMecanico );
+router.post('/reautenticar', mecanicoController.reauthenticate);
+router.get('/verify/:id', mecanicoController.verifyToken, mecanicoController.obtenerMecanicoById);
 
 module.exports = router;
