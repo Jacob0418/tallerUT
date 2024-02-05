@@ -1,34 +1,33 @@
 import React, { useState, useEffect } from "react";
-import CardsTrabajo from "../components/Cards";
 import axios from '../api/axios';
+import CardsReparacion from "../components/CardsReparaciones";
 
-function VistaRegistro() {
-    const [trabajoData, setTrabajoData] = useState(null);
+function VistaReparacion() {
+    const [reparacionData, setReparacionData] = useState(null);
 
     useEffect(() => {
-        axios.get('/trabajo')
+        axios.get('/reparacion')
             .then(response => {
-                setTrabajoData(response.data);
+                setReparacionData(response.data);
             })
             .catch(error => {
-                console.error('Error al obtener datos de trabajo:', error);
+                console.error('Error al obtener datos de reparación:', error);
             });
     }, []);
 
     return (
         <>
-            <h1 className="text-center mt-3 font-bold text-3xl">TRABAJOS PENDIENTES</h1>
+            <h1 className="text-center mt-3 font-bold text-3xl">REPARACIONES PENDIENTES</h1>
             <div className="flex flex-wrap justify-center gap-7">
-                {trabajoData && trabajoData.map(trabajo => (
-                    <CardsTrabajo
-                        key={trabajo.id_trabajo}
-                        id_trabajo={trabajo.id_trabajo}
-                        tipo={trabajo.descripcion_revision}
-                        materiales={trabajo.materiales}  
-                        pinturas={trabajo.nombre_pintura}  
-                        mecanico={trabajo.id_mecanico_id}  
-                        horas={trabajo.horas}
-                        costo={trabajo.precio_total_trabajo} 
+                {reparacionData && reparacionData.map(reparacion => (
+                    <CardsReparacion
+                        key={reparacion.id_reparacion}
+                        id_reparacion={reparacion.id_reparacion}
+                        tipo={reparacion.tipo_reparacion}
+                        materiales={reparacion.id_material_id}  
+                        estatus={reparacion.id_estatus_id}  
+                        descripcion={reparacion.descripcion_reparacion}  
+                        costo={reparacion.precio_reparacion} 
                     />
                 ))}
             </div>
@@ -36,4 +35,4 @@ function VistaRegistro() {
     );
 }
 
-export default VistaRegistro;
+export default VistaReparacion;
