@@ -11,6 +11,7 @@ import Services from './pages/Services'
 import { AuthProvider } from "./api/context/AuthContext";
 import RegistroTrabajo from './pages/RegistroTrabajo';
 import PrivateRoutes from './privateRoutes/privateRoutes';
+import RegistroReparacion from './pages/RegistroReparacion';
 
 function App() {
   return (
@@ -26,9 +27,10 @@ function App() {
           <Route path='/RegistroTrabajo' element={<RegistroTrabajo />} />
           <Route path='/Servicios' element={<Services />} />
           <Route path="/Actualizar/:id_trabajo" element={<Actualizar />} />
+          <Route path='/RegistroReparacion' element={<RegistroReparacion />} />
+          <Route path='/ListaReparaciones' element={""} />
           <Route element={<PrivateRoutes/>} >
 
-          <Route element={<PrivateRoutes/>} >
           </Route>
           <Route path='/*' element={<NotFound />} />
 
