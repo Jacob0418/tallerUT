@@ -1,8 +1,8 @@
 const db = require('../db');
 const bcrypt = require('bcrypt');
-const { use } = require('bcrypt/promises');
+//const { use } = require('bcrypt/promises');
 const jwt = require('jsonwebtoken');
-const TOKEN_SECRET = process.env.TOKEN;
+require('dotenv').config()
 
 const obtenerAdmin = (req, res) => {
     db.query('SELECT * FROM admins', (error, results) => {
@@ -54,7 +54,7 @@ const insertarAdmin = (req, res) => {
     db.query('INSERT INTO admins (nombre, apellido, password, email) VALUES (?, ?, ?, ?)', [nombre, apellido, encryptation, email], (error, results) => {
         if (error) {
             return res
-            .status(500).json({ error: 'No se creo admin'});
+            .status(500).json({ error: 'No se creó admin'});
         } else {
             return res
             .status(201).json({ message: 'Admin creado exitosamente' });
@@ -63,33 +63,37 @@ const insertarAdmin = (req, res) => {
 };
 
 const loginAdmin = (req, res) => {
-    const { nombre, password } = req.body;
+    const { email, password } = req.body;
 
-    db.query('SELECT * FROM admins WHERE nombre = ?', [nombre], (err, results) => {
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Correo y contraseña son necesarios'});
+    }
+
+    db.query('SELECT * FROM admins WHERE email = ?', [email], (err, results) => {
         if (err) {
-            res.status(500).json(['error al obtener admin: ' + nombre]);
+            res.status(500).json(['error al obtener admin: ' + email]);
         } else if (results.length === 0) {
-            res.status(404).json(['no se encontró el admin: ' + nombre]);
+            res.status(404).json(['no se encontró el admin: ' + email]);
         } else {
             const response = results[0];
 
-            const correctPassword = bcrypt.compareSync(password, response.password);
+            const correctPassword = bcrypt.compare(password, response.password);
 
             if (correctPassword) {
-                const token = jwt.sign({id: response.id_admin}, TOKEN_SECRET, {
+                const token = jwt.sign({id: response.id_admin}, process.env.TOKEN, {
                     expiresIn: '5d'
                 });
 
-                res.cookies('token', token, {
-                    SamSite: 'None',
-                    secure: true,
+                res.cookie('token', token, {
+                    httpOnly: true,
                 });
 
                 res.json({
                     message: 'Inicio de sesión correcto',
+                    token,
                     id: response.id_admin,
                     nombre: response.nombre,
-                    no_telefonico: response.no_telefonico,
+                    email: response.email,
                 });
             } else {
                 res.status(400).json(['Contraseña incorrecta']);
@@ -99,37 +103,19 @@ const loginAdmin = (req, res) => {
 };
 
 const verifyToken = (req, res) => {
-    const { userType } = req.params;
-    const { token } = req.cookies;
+    const token = req.cookies.token
 
-    if(!token) return res.json({ authenticated: false});
+    if(!token) {
+        return res.status(401).json({ message: 'Acceso denegado' });
+    }
 
-    jwt.verify(token, TOKEN_SECRET, async (error, user) => {
-        if (error) return res.sendStatus(401);
-
-        const id = user.id;
-
-        const query = userType === 'admin'
-        ? 'SELECT * FROM admins WHERE id_admin = ?'
-        : 'SELECT * FROM mecanico WHERE id_mecanico = ?'
-
-        const idField = userType === 'admin' ? 'id_admin' : 'id_mecanico';
-
-        db.query(query,[id], async (err, results) => {
-            if (err) {
-                return res.status(500).json({ message: 'Ocurrió un error al verificar el token' });
-            } else if (results.length === 0) {
-                return res.sendStatus(401);
-            } else {
-                const userinfo = results[0];
-
-                return res.json({
-                    id: userinfo[idField],
-                    nombre: userinfo.nombre || null
-                });
-            }
-        });
-    });
+    try {
+        const verified = jwt.verify(token, process.env.TOKEN);
+        req.user = verified;
+        next();
+    }  catch (error) {
+        res.status(400).json({ message: 'Token no válido' });
+    }
 };
 
 const logoutAdmin = (req, res) => {

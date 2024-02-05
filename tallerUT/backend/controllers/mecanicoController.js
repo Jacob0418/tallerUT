@@ -104,7 +104,7 @@ const loginMecanico = (req, res) => {
 
 
 const verifyToken = (req, res, next) => {
-    const token = req.cookies.token; // Asegúrate de que estás usando un middleware de cookies como cookie-parser
+    const token = req.cookies.token;
 
     if (!token) {
         return res.status(401).json({ message: 'Acceso denegado' });

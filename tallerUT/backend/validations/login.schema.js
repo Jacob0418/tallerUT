@@ -1,5 +1,13 @@
 const { z } = require('zod');
 
+const registerAdminSchema = z.object({
+    nombre: z.string({ required_error: 'Nombre obligatorio' }),
+    apellido: z.string({ required_error: 'Apellido obligatorio'}),
+    password: z.string({ required_error: 'Contraseña obligatoria' })
+    .min(5, { message: 'La contraseña debe ser mínimo de 5 caracteres' }),
+    email: z.string({ required_error: 'Correo obligatorio' })
+});
+
 const registerSchema = z.object({
     nombre: z.string({ required_error: 'Nombre obligatorio' }),
     apellido: z.string({ required_error: 'Apellido obligatorio'}),
@@ -18,5 +26,6 @@ const loginSchema = z.object({
 
 module.exports = {
     registerSchema,
-    loginSchema
+    loginSchema,
+    registerAdminSchema,
 };

@@ -28,7 +28,6 @@ function App() {
           <Route path='/LogIn' element={<LogIn />} />
           <Route path='/' element={<Inicio />} />
           <Route path='/UserRegister' element={<UserRegister />} />
-          <Route element={<PrivateRoutes/>} >
           <Route path='/Trabajos' element={<VistaTrabajo />} />
           <Route path='/RegistroTrabajo' element={<RegistroTrabajo />} />
           <Route path='/Servicios' element={<Services />} />
@@ -36,6 +35,7 @@ function App() {
           <Route path='/RegistroReparacion' element={<RegistroReparacion />} />
           <Route path='/Reparaciones' element={<VistaReparacion />} />
           <Route path='ActualizarReparacion/:id_reparacion' element={<ActualizarReparacion/>} />
+          <Route element={<PrivateRoutes/>} >
 
           </Route>
           <Route path='/*' element={<NotFound />} />

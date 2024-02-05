@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function CardsTrabajo({ id_trabajo, tipo, materiales, pinturas, mecanico, horas, costo }) {
+function CardsTrabajo({ id_trabajo, tipo, pinturas, mecanico, horas, costo }) {
     return (
         <>
             <div className="border-[3px] border-red-500 w-80 h-72 rounded-[7px_7px_7px_7px] bg-white">
                 <p className="text-center uppercase font-semibold text-xl mb-2 mt-2">Trabajo #{id_trabajo}</p>
-                <p className="ml-2"><span className="font-medium text-lg">Tipo:</span> {tipo} reparación</p>
-                <p className="ml-2"><span className="font-medium text-lg">Materiales:</span> {materiales}</p>
+                <p className="ml-2"><span className="font-medium text-lg">Tipo:</span> {tipo}</p>
                 <p className="ml-2"><span className="font-medium text-lg">Pinturas:</span> {pinturas}</p>
                 <p className="ml-2"><span className="font-medium text-lg">Mecánico:</span> {mecanico}</p>
                 <p className="ml-2"><span className="font-medium text-lg">Horas:</span> {horas}</p>

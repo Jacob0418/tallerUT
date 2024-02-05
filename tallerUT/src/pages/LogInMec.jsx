@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 function LogInF() {
     const {
-        loginReqMecanico,
-        isAuthenticatedMecanico,
+        loginReqAdmin,
+        isAuthenticatedAdmin,
         error: signinErrors,
     } = useAuth();
 
@@ -21,21 +21,21 @@ function LogInF() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isAuthenticatedMecanico) {
+        if (isAuthenticatedAdmin) {
             navigate('/trabajos');
         } else {
             navigate('/login');
         }
-    }, [isAuthenticatedMecanico, navigate]);
+    }, [isAuthenticatedAdmin, navigate]);
 
     const onSubmit = async (data) => {
         try {
-            await loginReqMecanico({
+            await loginReqAdmin({
                 email: data.email,
                 password: data.password,
             });
 
-            navigate('/trabajos');
+            navigate('/dashboard');
         } catch (error) {
             console.log('Error al realizar la solicitud de inicio de sesión de mecánico', error);
 

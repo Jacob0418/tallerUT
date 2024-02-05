@@ -6,12 +6,12 @@ function RegistroTrabajo() {
   const { id_trabajo } = useParams();
   const [trabajoData, setTrabajoData] = useState({
     id_mecanico_id: "",
-    nombre_pintura: "",
-    nombre_de_pieza: "",
     descripcion_revision: "",
     modelo_vehiculo: "",
-    estadoTrabajo: "Pendiente",
     horas: "",
+    id_status_id: "",
+    nombre_pintura: "",
+    nombre_de_pieza: "",
     precio_fijo_trabajo: "",
     precio_total_trabajo: "",
   });
@@ -60,12 +60,55 @@ function RegistroTrabajo() {
                 onChange={handleChange}
                 className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
               />
+              <label htmlFor="descripcion_revision">Descripcion</label>
+              <textarea
+                id="descripcion_revision"
+                name="descripcion_revision"
+                placeholder="Descripcion del trabajo"
+                type="text"
+                value={trabajoData.descripcion_revision}
+                onChange={handleChange}
+                className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+              />
+              <label htmlFor="modelo_vehiculo">Vehiculo</label>
+              <input
+                id="modelo_vehiculo"
+                name="modelo_vehiculo"
+                placeholder="Modelo del vehiculo"
+                type="text"
+                value={trabajoData.modelo_vehiculo}
+                onChange={handleChange}
+                className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+              />
+              <label htmlFor="horas">
+              Horas del trabajo
+              </label>
+              <input
+                id="horas"
+                name="horas"
+                placeholder="Horas"
+                type="text"
+                value={trabajoData.horas}
+                onChange={handleChange}
+                className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+              />
+              <label htmlFor="id_status_id">Estado del trabajo</label>
+              <input
+                id="id_status_id"
+                name="id_status_id"
+                placeholder="Estado"
+                type="text"
+                value={trabajoData.id_status_id}
+                onChange={handleChange}
+                className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+              />
+            </div>
+            <div className="w-1/2 px-1">
               <label htmlFor="nombre_pintura">Pintura</label>
               <input
                 id="nombre_pintura"
                 name="nombre_pintura"
-                placeholder="Ingrese pintura"
-                type="text"
+                placeholder="Nombre de la pintura"
                 value={trabajoData.nombre_pintura}
                 onChange={handleChange}
                 className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
@@ -74,52 +117,9 @@ function RegistroTrabajo() {
               <input
                 id="nombre_de_pieza"
                 name="nombre_de_pieza"
-                placeholder="Ingrese la pieza"
+                placeholder="Nombre de la pieza"
                 type="text"
                 value={trabajoData.nombre_de_pieza}
-                onChange={handleChange}
-                className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-              />
-              <label htmlFor="descripcion_revision">
-                Descripción del trabajo
-              </label>
-              <textarea
-                id="descripcion_revision"
-                name="descripcion_revision"
-                placeholder="Descripción del trabajo"
-                type="text"
-                value={trabajoData.descripcion_revision}
-                onChange={handleChange}
-                className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4 h-24"
-              />
-              <label htmlFor="modelo_vehiculo">Modelo del Vehículo</label>
-              <input
-                id="modelo_vehiculo"
-                name="modelo_vehiculo"
-                placeholder="Modelo del vehículo"
-                type="text"
-                value={trabajoData.modelo_vehiculo}
-                onChange={handleChange}
-                className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-              />
-            </div>
-            <div className="w-1/2 px-1">
-              <label htmlFor="estadoTrabajo">Estado del trabajo</label>
-              <input
-                id="id_status_id"
-                name="id_status_id"
-                value={trabajoData.id_status_id}
-                onChange={handleChange}
-                className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-              >
-              </input>
-              <label htmlFor="horas">Horas del trabajo</label>
-              <input
-                id="horas"
-                name="horas"
-                placeholder="Horas de trabajo"
-                type="text"
-                value={trabajoData.horas}
                 onChange={handleChange}
                 className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
               />
