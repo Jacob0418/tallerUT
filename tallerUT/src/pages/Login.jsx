@@ -50,7 +50,7 @@ function LogIn() {
 
   return (
     <>
-      <div className="flex justify-center items-center mt-8 mb-8">
+      <div className="flex justify-center items-center mt-28">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col items-center justify-center shadow-xl border-red-500 border-2 border-solid w-[360px] h-auto text-center rounded-[10px_10px_10px_10px] p-5"
@@ -60,7 +60,7 @@ function LogIn() {
           </h1>
           <RiToolsFill className="size-14 mb-7" />
           {signinErrors && signinErrors.map((err, i) => (
-            <div className="bg-red-500 p-2 text-white rounded-[7px_7px_7px_7px]" key={i}>
+            <div className="bg-red-500 p-2 text-white rounded-[7px_7px_7px_7px] mb-4" key={i}>
               {err}
             </div>
           ))}

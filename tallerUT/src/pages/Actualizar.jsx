@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from '../api/axios';
 
 function Actualizar() {
     const { id_trabajo } = useParams();
     const [trabajoData, setTrabajoData] = useState(null);
     const [mecanicoData, setMecanicoData] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`/trabajo/${id_trabajo}`)
@@ -37,6 +39,7 @@ function Actualizar() {
         axios.put(`/trabajo/${id_trabajo}`, trabajoData)
             .then(response => {
                 console.log('Datos actualizados con éxito:', response.data);
+                navigate('/Trabajos')
             })
             .catch(error => {
                 console.error('Error al actualizar los datos:', error);

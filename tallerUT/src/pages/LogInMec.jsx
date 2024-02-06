@@ -22,11 +22,11 @@ function LogInF() {
 
     useEffect(() => {
         if (isAuthenticatedAdmin) {
-            navigate('/trabajos');
+            navigate('/Materiales');
         } else {
-            navigate('/login');
+            navigate('/admin');
         }
-    }, [isAuthenticatedAdmin, navigate]);
+    }, [isAuthenticatedAdmin]);
 
     const onSubmit = async (data) => {
         try {
@@ -35,7 +35,7 @@ function LogInF() {
                 password: data.password,
             });
 
-            navigate('/dashboard');
+            navigate('/Materiales');
         } catch (error) {
             console.log('Error al realizar la solicitud de inicio de sesión de mecánico', error);
 
@@ -50,7 +50,7 @@ function LogInF() {
 
     return (
         <>
-            <div className="flex justify-center items-center mt-8 mb-8">
+            <div className="flex justify-center items-center mt-28">
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col items-center justify-center shadow-xl border-red-500 border-2 border-solid w-[360px] h-auto text-center rounded-[10px_10px_10px_10px] p-5"

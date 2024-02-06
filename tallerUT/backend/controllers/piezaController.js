@@ -13,6 +13,19 @@ const obtenerPieza = (req, res) => {
     });
 }
 
+const obtenerStatus = (req, res) => {
+    db.query('SELECT * FROM estatus', (error, results) => {
+        if (error) {
+            console.error('Error al obtener status', error);
+            res.status(500).json({
+                error: 'No se obtuvo el status'
+            });
+        } else {
+            res.json(results)
+        }
+    });
+}
+
 const obtenerPiezacoById = (req, res) => {
     const id = req.params.id;
 
@@ -74,5 +87,6 @@ module.exports = {
     obtenerPiezacoById,
     actualizarPieza,
     insertarPieza,
-    eliminarPieza
+    eliminarPieza,
+    obtenerStatus,
 }

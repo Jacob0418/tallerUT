@@ -42,7 +42,7 @@ const insertarMecanico = (req, res) => {
                 .status(500).json({ error: 'No se creo mecánico' });
         } else {
             return res
-                .status(201).json({ message: 'Mécanico creado exitosamente' });
+                .status(201).json({ message: 'Mecánico creado exitosamente' });
         }
     });
 };
@@ -74,7 +74,7 @@ const loginMecanico = (req, res) => {
         if (err) {
             res.status(500).json({ message: 'Error al obtener el mecánico: ' + email });
         } else if (results.length === 0) {
-            res.status(404).json({ message: 'No se encontró al mecánico: ' + email });
+            res.status(404).json({ message: 'No se encontró el correo: ' + email });
         } else {
             const mecanico = results[0];
 

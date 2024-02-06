@@ -1,7 +1,7 @@
 const db = require('../db');
 
 const obtenerMaterial = (req, res) => {
-    db.query('SELECT * FROM material', (error, results) => {
+    db.query('SELECT m.id_material, p.nombre_pieza, d.color_pintura, m.id_pintura_id, m.precio_total_material FROM material m INNER JOIN piezas p ON m.id_pieza_id = p.id_pieza INNER JOIN pintura d ON m.id_pintura_id = d.id_pintura', (error, results) => {
         if (error) {
             console.error('Error al obtener material', error);
             res.status(500).json({
