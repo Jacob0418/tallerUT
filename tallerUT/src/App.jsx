@@ -31,6 +31,7 @@ import AgregarMecanico from './pages/AgregarMecanico';
 import EditMecanico from './pages/EditMecanico';
 import TabTrabajos from './pages/TableTrabajos';
 import AgregarTrabajo from './pages/AgregarTrabajo';
+import EditarTrabajo from './pages/EditTrabajo';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
               <Route path='/EditarPintura/:id_pintura' element={<EditPintura/>} />
               <Route path='/EditarMaterial/:id_material' element={<EditMaterial/>} />
               <Route path='/EditarMecanico/:id_mecanico' element={<EditMecanico/>} />
+              <Route path='/EditarTrabajo/:id_trabajo' element={<EditarTrabajo/>} />
             </Route>
 
             <Route path='/LogIn' element={<LogIn />} />

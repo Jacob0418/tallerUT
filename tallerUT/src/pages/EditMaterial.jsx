@@ -80,7 +80,7 @@ function EditMaterial() {
                         console.error(error);
                     }
                 })} className='flex flex-col border border-red-500 p-7 w-[350px] mt-12 rounded-[7px_7px_7px_7px] items-center' >
-                    <h1 className='my-5 text-center font-bold text-3xl uppercase text-red-500'>Agregar Pieza</h1>
+                    <h1 className='my-5 text-center font-bold text-3xl uppercase text-red-500'>Agregar Material</h1>
 
                     <label className='my-2 font-medium'>Pieza</label>
                     <select className='border-none focus:outline-red-500 focus:outline-none rounded-[5px_5px_5px_5px] p-1 w-52 mb-5'
