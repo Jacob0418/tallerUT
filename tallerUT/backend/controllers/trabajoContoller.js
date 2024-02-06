@@ -48,13 +48,14 @@ const insertarTrabajo = (req, res) => {
     db.query('INSERT INTO trabajos (id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza, precio_fijo_trabajo, precio_total_trabajo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [id_mecanico_id, descripcion_revision, modelo_vehiculo, horas, id_status_id, nombre_pintura, nombre_de_pieza, precio_fijo_trabajo, precio_total_trabajo], (error, results) => {
         if (error) {
             return res
-            .status(500).json({ error: 'No se creo el trabajo'});
+            .status(500).json({ error: 'No se creó el trabajo'});
         } else {
             return res
-            .status(201).json({ message: 'Trabajo creada exitosamente' });
+            .status(201).json({ message: 'Trabajo creado exitosamente' });
         }
     });
 };
+
 
 const eliminarTrabajo = (req, res) => {
     const id = req.params.id;

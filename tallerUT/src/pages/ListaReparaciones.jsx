@@ -24,8 +24,8 @@ function VistaReparacion() {
                         key={reparacion.id_reparacion}
                         id_reparacion={reparacion.id_reparacion}
                         tipo={reparacion.tipo_reparacion}
-                        materiales={reparacion.id_material_id}  
-                        estatus={reparacion.id_estatus_id}  
+                        materiales={reparacion.material}  
+                        estatus={reparacion.estatus}  
                         descripcion={reparacion.descripcion_reparacion}  
                         costo={reparacion.precio_reparacion} 
                     />
