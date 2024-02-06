@@ -111,7 +111,7 @@ function Actualizar() {
                                     className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 >
                                     <option>Pendiente</option>
-                                    <option>Finalizado</option>
+                                    <option>Completado</option>
                                 </select>
                                 <label htmlFor="horaTrabajo">Horas del trabajo</label>
                                 <input

@@ -1,7 +1,7 @@
 const db = require('../db');
 
 const obtenerReparacion = (req, res) => {
-    db.query('SELECT * FROM reparaciones', (error, results) => {
+    db.query('SELECT r.id_reparacion, r.tipo_reparacion, m.nombre_pieza AS material, p.color_pintura AS pintura, e.tipo_estatus AS estatus, r.descripcion_reparacion, r.precio_reparacion FROM reparaciones r JOIN material mat ON r.id_material_id = mat.id_material JOIN piezas m ON mat.id_pieza_id = m.id_pieza JOIN pintura p ON mat.id_pintura_id = p.id_pintura JOIN estatus e ON r.id_estatus_id = e.id_status;', (error, results) => {
         if (error) {
             console.error('Error al obtener reparacion', error);
             res.status(500).json({
@@ -29,9 +29,9 @@ const obtenerReparacioncoById = (req, res) => {
 
 const actualizarReparacion = (req, res) => {
     const id = req.params.id;
-    const { nombre_reparacion, precio_reparacion  } = req.body;
+    const { tipo_reparacion, id_material_id ,id_estatus_id , descripcion_reparacion,precio_reparacion  } = req.body;
 
-    db.query('UPDATE reparaciones SET nombre_reparacion = ?, precio_reparacion = ? WHERE id_reparacion = ?', [nombre_reparacion, precio_reparacion, id], (error, results) => {
+    db.query('UPDATE reparaciones SET tipo_reparacion = ?, id_material_id = ?, id_estatus_id = ?, descripcion_reparacion = ? ,precio_reparacion = ? WHERE id_reparacion = ?', [tipo_reparacion,id_material_id,id_estatus_id, descripcion_reparacion ,precio_reparacion, id], (error, results) => {
         if (error) {
             res.status(500).json({ error: 'Error al actualizar' })
         } else {
@@ -41,17 +41,17 @@ const actualizarReparacion = (req, res) => {
 };
 
 const insertarReparacion = (req, res) => {
-    const { nombre_reparacion, precio_reparacion } = req.body;
+    const { tipo_reparacion, id_material_id ,id_estatus_id , descripcion_reparacion,precio_reparacion } = req.body;
 
-    db.query('INSERT INTO reparaciones (nombre_reparacion, precio_reparacion) VALUES (?, ?)', [nombre_reparacion, precio_reparacion], (error, results) => {
+    db.query('INSERT INTO reparaciones (tipo_reparacion, id_material_id, id_estatus_id, descripcion_reparacion, precio_reparacion) VALUES (?, ?, ?, ?, ? )', [tipo_reparacion, id_material_id, id_estatus_id, descripcion_reparacion, precio_reparacion], (error, results) => {
         if (error) {
-            return res
-            .status(500).json({ error: 'No se creo la reparacion'});
+            console.error("Error en la consulta:", error);
+            return res.status(500).json({ error: 'No se creó la reparación' });
         } else {
-            return res
-            .status(201).json({ message: 'Reparacion creada exitosamente' });
+            return res.status(201).json({ message: 'Reparación creada exitosamente' });
         }
     });
+    
 };
 
 const eliminarReparacion = (req, res) => {

@@ -40,6 +40,7 @@ const pinturaRoutes = require("./routes/pinturaRoutes");
 const trabajoRoutes = require("./routes/trabajoRoutes");
 const materialRoutes = require("./routes/materialRoutes");
 const reparacionRoutes = require("./routes/reparacionRoutes");
+const estadoRoutes = require("./routes/estadoRoutes");
 
 app.use("/mecanico", mecanicoRoutes);
 app.use("/admin", adminRoutes);
@@ -48,6 +49,7 @@ app.use("/pintura", pinturaRoutes);
 app.use("/trabajo", trabajoRoutes );
 app.use("/material", materialRoutes);
 app.use("/reparacion",reparacionRoutes );
+app.use("/estado", estadoRoutes );
 
 httpsServer.listen(process.env.PORT || 3000, () => {
   console.log(`Servidor corriendo por el puerto ${process.env.PORT || 3000}`);

@@ -11,9 +11,27 @@ function RegistroReparacion() {
     descripcion_reparacion: "",
     precio_reparacion: "",
   });
+  const [materiales, setMateriales] = useState([]); // Lista de materiales
+  const [estados, setEstados] = useState([]); // Lista de estados
 
   useEffect(() => {
-    // Puedes realizar acciones de inicialización si es necesario
+    // Obtener lista de materiales
+    axios.get('/material')
+      .then(response => {
+        setMateriales(response.data);
+      })
+      .catch(error => {
+        console.error('Error al obtener la lista de materiales:', error);
+      });
+
+    // Obtener lista de estados
+    axios.get('/estado')
+      .then(response => {
+        setEstados(response.data);
+      })
+      .catch(error => {
+        console.error('Error al obtener la lista de estados:', error);
+      });
   }, []);
 
   const handleChange = (e) => {
@@ -26,8 +44,23 @@ function RegistroReparacion() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("/reparacion", reparacionData)
+
+    // Convertir el nombre del material a su ID correspondiente
+    const materialSeleccionado = materiales.find(m => m.nombre_pieza === reparacionData.id_material_id);
+    const idMaterial = materialSeleccionado ? materialSeleccionado.id_material : null;
+
+    // Convertir el nombre del estado a su ID correspondiente
+    const estadoSeleccionado = estados.find(e => e.tipo_estatus === reparacionData.id_estatus_id);
+    const idEstatus = estadoSeleccionado ? estadoSeleccionado.id_status : null;
+
+    // Actualizar los datos con los IDs correspondientes
+    const datosActualizados = {
+      ...reparacionData,
+      id_material_id: idMaterial,
+      id_estatus_id: idEstatus
+    };
+
+    axios.post("/reparacion", datosActualizados)
       .then((response) => {
         console.log("Reparación registrada con éxito:", response.data);
         // Puedes realizar acciones después de registrar la reparación, como redirigir al usuario a otra página
@@ -77,7 +110,7 @@ function RegistroReparacion() {
               />
             </div>
             <div className="w-1/2 px-1">
-            <label htmlFor="tipo_reparacion">Descripcion</label>
+              <label htmlFor="tipo_reparacion">Descripcion</label>
               <textarea
                 id="descripcion_reparacion"
                 name="descripcion_reparacion"
@@ -88,7 +121,7 @@ function RegistroReparacion() {
               <label htmlFor="tipo_reparacion">Precio</label>
               <input
                 id="precio_reparacion"
-                name="dprecio_reparacion"
+                name="precio_reparacion"
                 placeholder="Precio de la reparación"
                 value={reparacionData.precio_reparacion}
                 onChange={handleChange}
