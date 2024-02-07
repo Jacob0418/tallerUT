@@ -12,7 +12,6 @@ function CardsReparacion({ id_reparacion, tipo, materiales, estatus, descripcion
                 <p className="ml-2"><span className="font-medium text-lg">Descripción:</span> {descripcion}</p>
                 <p className="ml-2"><span className="font-medium text-lg">Costo:</span> ${costo}</p>
                 <span className="flex flex-row gap-3 items-center justify-center mt-3">
-                    <button className="border-2 p-2 rounded-[5px_5px_5px_5px] border-red-500 bg-red-500 text-white font-medium hover:-translate-y-1">Finalizar</button>
                     <Link to={`/ActualizarReparacion/${id_reparacion}`}><button className="border-2 p-2 rounded-[5px_5px_5px_5px] border-red-500 bg-red-500 text-white font-medium hover:-translate-y-1">Actualizar</button></Link>
                 </span>
             </div>
