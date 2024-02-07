@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 function EditarTrabajo() {
 
+    const [trabajo, setTrabajo] = useState([]);
     const [mecanico, setMecanico] = useState([]);
     const [desc, setDesc] = useState([]);
     const [vehiculo, setVehiculo] = useState([]);
@@ -24,12 +25,12 @@ function EditarTrabajo() {
 
     const fetchId = async (values) => {
         try {
-            const response = await axios.get(`https://localhost:3000/material/${id_trabajo}`);
-            setMaterial(response.data);
+            const response = await axios.get(`https://localhost:3000/trabajo/${id_trabajo}`);
+            setTrabajo(response.data);
             console.log(response.data);
 
+            setValue('id_mecanico_id', response.data.id_mecanico_id);
             setValue('descripcion_revision', response.data.descripcion_revision);
-            setValue('nombre_mecanico', response.data.nombre_mecanico);
             setValue('modelo_vehiculo', response.data.modelo_vehiculo);
             setValue('horas', response.data.horas);
             setValue('tipo_estatus', response.data.tipo_estatus);
@@ -69,7 +70,7 @@ function EditarTrabajo() {
     };
     const fetchStatus = async () => {
         try {
-            const response = await axios.get('https://localhost:3000/pieza/status');
+            const response = await axios.get('https://localhost:3000/estado');
             setStatus(response.data)
         } catch (error) {
             console.error(error);
@@ -133,32 +134,30 @@ function EditarTrabajo() {
     return (
         <>
             <div className='flex items-center justify-center'>
-                <form onSubmit={handleSubmit(async (values) => {
-                    try {
-                        console.log(values);
-                        const response =     axios.post(
-                            "https://localhost:3000/trabajo",
-                            values
-                        );
-                        console.log(response.data);
-                        navigate("/TrabajoAdm");
-                    } catch (error) {
-                        console.error(error);
-                    }
+                <form onSubmit={handleSubmit((values) => {
+                    console.log(values);
+                    axios.put(`https://localhost:3000/trabajo/${id_trabajo}`, values)
+                        .then(response => {
+                            console.log(response.data);
+                            navigate("/TrabajoAdm");
+                        })
+                        .catch(error => {
+                            console.error(error.response || error);
+                        });
                 })} className='w-[600px] p-5'  >
 
 
                     <fieldset className="border border-red-500 p-4 rounded-[7px_7px_7px_7px]">
-                        <legend className="text-xl font-semibold text-gray-700">CREAR</legend>
+                        <legend className="text-xl font-semibold text-gray-700">EDITAR TRABAJO</legend>
                         <div className="flex flex-wrap -mx-2">
                             <div className="w-1/2 px-1">
                                 <label className='my-2 font-medium'>Mecánico</label>
-                                <select className='border-none focus:outline-red-500 focus:outline-none rounded-[5px_5px_5px_5px] p-1 w-52 mb-5'
+                                <select className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                     type='text'
                                     {...register('id_mecanico_id', {
                                         required: {
                                             value: true,
-                                            message: 'Pieza es necesaria',
+                                            message: 'Mecánico es necesario',
                                         }
                                     })}
                                 >
@@ -251,7 +250,7 @@ function EditarTrabajo() {
                         </div>
                         <div className="flex justify-center">
                             <button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
-                                Agregar
+                                Actualizar
                             </button>
                         </div>
                     </fieldset>

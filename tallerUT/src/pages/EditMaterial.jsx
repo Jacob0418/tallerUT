@@ -70,8 +70,8 @@ function EditMaterial() {
                 <form onSubmit={handleSubmit(async (values) => {
                     try {
                         console.log(values);
-                        const response = axios.post(
-                            "https://localhost:3000/material",
+                        const response = axios.put(
+                            `https://localhost:3000/material/${id_material}`,
                             values
                         );
                         console.log(response.data);

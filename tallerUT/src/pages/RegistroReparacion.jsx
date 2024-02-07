@@ -1,145 +1,246 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import axios from "../api/axios";
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 
 function RegistroReparacion() {
-  const { id_reparacion } = useParams();
-  const [reparacionData, setReparacionData] = useState({
-    tipo_reparacion: "",
-    id_material_id: "",
-    id_estatus_id: "",
-    descripcion_reparacion: "",
-    precio_reparacion: "",
-  });
-  const [materiales, setMateriales] = useState([]); 
-  const [estados, setEstados] = useState([]); 
+  const [mecanico, setMecanico] = useState([]);
+  const [desc, setDesc] = useState([]);
+  const [vehiculo, setVehiculo] = useState([]);
+  const [hora, setHora] = useState([]);
+  const [status, setStatus] = useState([]);
+  const [pintura, setPintura] = useState([]);
+  const [pieza, setPieza] = useState([]);
+  const [fijo, setFijo] = useState([]);
+  const [total, setTotal] = useState([]);
 
-  useEffect(() => {
-    axios.get('/material')
-      .then(response => {
-        setMateriales(response.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener la lista de materiales:', error);
-      });
+  const navigate = useNavigate();
 
-    axios.get('/estado')
-      .then(response => {
-        setEstados(response.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener la lista de estados:', error);
-      });
-  }, []);
+  const { handleSubmit, register, formState: { error } } = useForm();
+  //console.log(error);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setReparacionData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const fetchMecanico = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/mecanico');
+      setMecanico(response.data)
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const fetchDescrip = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/trabajo');
+      setDesc(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchHora = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/trabajo');
+      setHora(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchStatus = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/pieza/status');
+      setStatus(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchPintura = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/pintura');
+      setPintura(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchPieza = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/pieza');
+      setPieza(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchFijo = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/trabajo');
+      setFijo(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchTotal = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/trabajo');
+      setTotal(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    const materialSeleccionado = materiales.find(m => m.nombre_pieza === reparacionData.id_material_id);
-    const idMaterial = materialSeleccionado ? materialSeleccionado.id_material : null;
+  useEffect(() => {
+    fetchMecanico();
+    fetchDescrip();
+    fetchVehiculo();
+    fetchFijo();
+    fetchHora();
+    fetchPieza();
+    fetchPintura();
+    fetchStatus();
+    fetchTotal();
+  }, [])
 
- 
-    const estadoSeleccionado = estados.find(e => e.tipo_estatus === reparacionData.id_estatus_id);
-    const idEstatus = estadoSeleccionado ? estadoSeleccionado.id_status : null;
-
-   
-    const datosActualizados = {
-      ...reparacionData,
-      id_material_id: idMaterial,
-      id_estatus_id: idEstatus
-    };
-
-    axios.post("/reparacion", datosActualizados)
-      .then((response) => {
-        console.log("Reparación registrada con éxito:", response.data);
-       
-      })
-      .catch((error) => {
-        console.error("Error al registrar la reparación:", error);
-      });
+  const fetchVehiculo = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/trabajo');
+      setVehiculo(response.data)
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <>
-      <h1 className="text-center font-semibold text-4xl mt-2">REGISTRO DE REPARACIÓN</h1>
-      <form
-        className="flex flex-col max-w-lg mx-auto my-8"
-        onSubmit={handleSubmit}
-      >
-        <fieldset className="border border-red-500 p-4 rounded-[7px_7px_7px_7px]">
-          <legend className="text-xl font-semibold text-gray-700">REGISTRAR REPARACIÓN</legend>
-          <div className="flex flex-wrap -mx-2">
-            <div className="w-1/2 px-1">
-              <label htmlFor="tipo_reparacion">Tipo de Reparación</label>
-              <input
-                id="tipo_reparacion"
-                name="tipo_reparacion"
-                placeholder="Reparaciones"
-                value={reparacionData.tipo_reparacion}
-                onChange={handleChange}
-                className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-              />
-              <label htmlFor="tipo_reparacion">Material</label>
-              <input
-                id="id_material_id"
-                name="id_material_id"
-                placeholder="Material"
-                value={reparacionData.id_material_id}
-                onChange={handleChange}
-                className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-              />
-              <label htmlFor="tipo_reparacion">Estado</label>
-              <input
-                id="id_estatus_id"
-                name="id_estatus_id"
-                placeholder="Estado de la reparación"
-                value={reparacionData.id_estatus_id}
-                onChange={handleChange}
-                className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-              />
+      <div className='flex items-center justify-center mt-16'>
+        <form onSubmit={handleSubmit(async (values) => {
+          try {
+            const response = await axios.post(
+              "https://localhost:3000/trabajo",
+              values
+            );
+            console.log(response.data);
+            navigate("/Trabajos");
+          } catch (error) {
+            console.error("Error al enviar la solicitud:", error);
+          }
+        })} className='w-[600px] p-5 '  >
+
+          
+
+          <fieldset className="border border-red-500 p-4 rounded-[7px_7px_7px_7px]">
+            <legend className="text-xl font-semibold text-gray-700">REGISTRAR REPARACIÓN</legend>
+            <div className="flex flex-wrap -mx-2">
+              <div className="w-1/2 px-1">
+                <label className='my-2 font-medium'>Mecánico</label>
+                <select className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                  type='text'
+                  {...register('id_mecanico_id', {
+                    required: {
+                      value: true,
+                      message: 'Pieza es necesaria',
+                    }
+                  })}
+                >
+                  {' '}
+                  {mecanico.map((mecha, index) => (
+                    <option className='text-black' key={index} value={mecha.id_mecanico}>{mecha.nombre}</option>
+                  ))}
+
+                </select>
+
+                <label>Descripcion</label>
+                <textarea
+                  name='descripcion_revision'
+                  type='text'
+                  {...register('descripcion_revision', { required: { value: true, message: 'Descripcion necesario' } })}
+                  className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                />
+
+                <label>Vehiculo</label>
+                <input
+                  name='modelo_vehiculo'
+                  placeholder="Modelo del vehiculo"
+                  type="text"
+                  {...register('modelo_vehiculo', { required: { value: true, message: 'Precio necesario' } })}
+                  className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                />
+                <label>
+                  Horas
+                </label>
+                <input
+                  name="horas"
+                  type="text"
+                  {...register('horas', { required: { value: true, message: 'Precio necesario' } })}
+                  className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                />
+                <label>Estado del trabajo</label>
+                <select
+                  name='id_status_id'
+                  type="text"
+                  {...register('id_status_id', { required: { value: true, message: 'Precio necesario' } })}
+                  className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                >
+                  {' '}
+                  {status.map((estatus, index) => (
+                    <option className='text-black' key={index} value={estatus.id_status}>{estatus.tipo_estatus}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="w-1/2 px-1">
+                <label>Pintura</label>
+                <select
+                  name="nombre_pintura"
+                  placeholder="Nombre de la pintura"
+                  {...register('nombre_pintura', { required: { value: true, message: 'Precio necesario' } })}
+                  className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                >
+                  {' '}
+                  {pintura.map((paint, index) => (
+                    <option className='text-black' key={index} value={paint.id_pintura}>{paint.color_pintura}</option>
+                  ))}
+                </select>
+                <label>Pieza</label>
+                <select
+                  name="nombre_de_pieza"
+                  type="text"
+                  {...register('nombre_de_pieza', { required: { value: true, message: 'Precio necesario' } })}
+                  className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                >
+                  {' '}
+                  {pieza.map((pieces, index) => (
+                    <option className='text-black' key={index} value={pieces.id_pieza}>{pieces.nombre_pieza}</option>
+                  ))}
+                </select>
+                <label>Costo fijo</label>
+                <input
+                  name="precio_fijo_trabajo"
+                  placeholder="Costo fijo"
+                  type="text"
+                  {...register('precio_fijo_trabajo', { required: { value: true, message: 'Precio necesario' } })}
+                  className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                />
+                <label>Precio total</label>
+                <input
+                  name="precio_total_trabajo"
+                  type="text"
+                  {...register('precio_total_trabajo', { required: { value: true, message: 'Precio necesario' } })}
+                  className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                />
+              </div>
             </div>
-            <div className="w-1/2 px-1">
-              <label htmlFor="tipo_reparacion">Descripcion</label>
-              <textarea
-                id="descripcion_reparacion"
-                name="descripcion_reparacion"
-                value={reparacionData.descripcion_reparacion}
-                onChange={handleChange}
-                className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-              />
-              <label htmlFor="tipo_reparacion">Precio</label>
-              <input
-                id="precio_reparacion"
-                name="precio_reparacion"
-                placeholder="Precio de la reparación"
-                value={reparacionData.precio_reparacion}
-                onChange={handleChange}
-                className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-              />
-            </div>
-          </div>
-          <div className="flex justify-center">
-            <button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
-              Confirmar Registro
-            </button>
-            <Link to={"/Reparaciones"}>
+            <div className="flex justify-center gap-6">
+              <Link to={'/Servicios'}><button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
+                Regresar
+              </button></Link>
               <button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
-                Ver Reparaciones
+                Confirmar reparación
               </button>
-            </Link>
-          </div>
-        </fieldset>
-      </form>
+              <Link to={'/Trabajos'}><button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
+                Ver trabajos
+              </button></Link>
+            </div>
+          </fieldset>
+        </form>
+      </div>
     </>
-  );
+  )
 }
 
 export default RegistroReparacion;

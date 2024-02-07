@@ -45,7 +45,8 @@ function TabPieza() {
 
     return (
         <>
-            <div className="flex justify-center my-24 rounded-[7px_7px_7px_7px]">
+        <h1 className="text-center mt-7 mb-0 text-3xl font-semibold">TABLA DE PIEZAS</h1>
+            <div className="flex justify-center mt-12 mb-8 rounded-[7px_7px_7px_7px]">
                 <table>
                     <thead className="border-red-500 bg-red-500 text-white rounded-[7px_7px_7px_7px]">
                         <tr>

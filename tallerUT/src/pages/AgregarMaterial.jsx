@@ -52,8 +52,8 @@ function AgregarMaterial() {
             <div className='flex items-center justify-center'>
                 <form onSubmit ={handleSubmit( async (data) => {
         try {
-            const response = await axios.post('https://localhost:3000/trabajo', data);
-            navigate('/TrabajoAdm')
+            const response = await axios.post('https://localhost:3000/material', data);
+            navigate('/Materiales')
         } catch (error) {
             console.log('Error en la BD');
         }

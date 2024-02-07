@@ -47,7 +47,7 @@ function AgregarTrabajo() {
     };
     const fetchStatus = async () => {
         try {
-            const response = await axios.get('https://localhost:3000/pieza/status');
+            const response = await axios.get('https://localhost:3000/estado');
             setStatus(response.data)
         } catch (error) {
             console.error(error);
@@ -110,32 +110,30 @@ function AgregarTrabajo() {
     return (
         <>
             <div className='flex items-center justify-center'>
-                <form onSubmit={handleSubmit(async (values) => {
-                    try {
-                        console.log(values);
-                        const response =     axios.post(
-                            "https://localhost:3000/trabajo",
-                            values
-                        );
-                        console.log(response.data);
-                        navigate("/TrabajoAdm");
-                    } catch (error) {
-                        console.error(error);
-                    }
+                <form onSubmit={handleSubmit((values) => {
+                    console.log(values);
+                    axios.post("https://localhost:3000/trabajo", values)
+                        .then(response => {
+                            console.log(response.data);
+                            navigate("/TrabajoAdm");
+                        })
+                        .catch(error => {
+                            console.error(error.response || error);
+                        });
                 })} className='w-[600px] p-5'  >
 
 
                     <fieldset className="border border-red-500 p-4 rounded-[7px_7px_7px_7px]">
-                        <legend className="text-xl font-semibold text-gray-700">CREAR</legend>
+                        <legend className="text-xl font-semibold text-gray-700">AGREGAR TRABAJO</legend>
                         <div className="flex flex-wrap -mx-2">
                             <div className="w-1/2 px-1">
                                 <label className='my-2 font-medium'>Mecánico</label>
-                                <select className='border-none focus:outline-red-500 focus:outline-none rounded-[5px_5px_5px_5px] p-1 w-52 mb-5'
+                                <select className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                     type='text'
                                     {...register('id_mecanico_id', {
                                         required: {
                                             value: true,
-                                            message: 'Pieza es necesaria',
+                                            message: 'Mecánico es necesaria',
                                         }
                                     })}
                                 >
@@ -147,8 +145,8 @@ function AgregarTrabajo() {
                                 </select>
 
                                 <label>Descripcion</label>
-                                <textarea
-                                name='descripcion_revision'
+                                <input
+                                    placeholder='Descripción de la tarea'
                                     type='text'
                                     {...register('descripcion_revision', { required: { value: true, message: 'Descripcion necesario' } })}
                                     className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
@@ -156,24 +154,22 @@ function AgregarTrabajo() {
 
                                 <label>Vehiculo</label>
                                 <input
-                                name='modelo_vehiculo'
                                     placeholder="Modelo del vehiculo"
                                     type="text"
-                                    {...register('modelo_vehiculo', { required: { value: true, message: 'Precio necesario' } })}
+                                    {...register('modelo_vehiculo', { required: { value: true, message: 'Vehículo necesario' } })}
                                     className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 />
                                 <label>
                                     Horas
                                 </label>
                                 <input
-                                    name="horas"
+                                    placeholder='Ingrese cantidad de horas'
                                     type="text"
-                                    {...register('horas', { required: { value: true, message: 'Precio necesario' } })}
+                                    {...register('horas', { required: { value: true, message: 'Horas necesario' } })}
                                     className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 />
                                 <label>Estado del trabajo</label>
                                 <select
-                                name='id_status_id'
                                     type="text"
                                     {...register('id_status_id', { required: { value: true, message: 'Precio necesario' } })}
                                     className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
@@ -192,26 +188,24 @@ function AgregarTrabajo() {
                                     {...register('nombre_pintura', { required: { value: true, message: 'Precio necesario' } })}
                                     className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 >
-                                                                        {' '}
+                                    {' '}
                                     {pintura.map((paint, index) => (
                                         <option className='text-black' key={index} value={paint.id_pintura}>{paint.color_pintura}</option>
                                     ))}
-                                    </select>
+                                </select>
                                 <label>Pieza</label>
                                 <select
-                                    name="nombre_de_pieza"
                                     type="text"
                                     {...register('nombre_de_pieza', { required: { value: true, message: 'Precio necesario' } })}
                                     className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 >
-                                                                        {' '}
+                                    {' '}
                                     {pieza.map((pieces, index) => (
                                         <option className='text-black' key={index} value={pieces.id_pieza}>{pieces.nombre_pieza}</option>
                                     ))}
-                                    </select>
+                                </select>
                                 <label>Costo fijo</label>
                                 <input
-                                    name="precio_fijo_trabajo"
                                     placeholder="Costo fijo"
                                     type="text"
                                     {...register('precio_fijo_trabajo', { required: { value: true, message: 'Precio necesario' } })}
@@ -219,7 +213,7 @@ function AgregarTrabajo() {
                                 />
                                 <label>Precio total</label>
                                 <input
-                                    name="precio_total_trabajo"
+                                    placeholder='Precio total'
                                     type="text"
                                     {...register('precio_total_trabajo', { required: { value: true, message: 'Precio necesario' } })}
                                     className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"

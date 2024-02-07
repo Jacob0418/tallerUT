@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function RegistroTrabajo() {
   const [mecanico, setMecanico] = useState([]);
@@ -116,7 +116,7 @@ function RegistroTrabajo() {
               values
             );
             console.log(response.data);
-            navigate("/TrabajoAdm");
+            navigate("/Trabajos");
           } catch (error) {
             console.error("Error al enviar la solicitud:", error);
           }
@@ -125,11 +125,11 @@ function RegistroTrabajo() {
           
 
           <fieldset className="border border-red-500 p-4 rounded-[7px_7px_7px_7px]">
-            <legend className="text-xl font-semibold text-gray-700">CREAR</legend>
+            <legend className="text-xl font-semibold text-gray-700">CREAR TRABAJO</legend>
             <div className="flex flex-wrap -mx-2">
               <div className="w-1/2 px-1">
                 <label className='my-2 font-medium'>Mecánico</label>
-                <select className='border-none focus:outline-red-500 focus:outline-none rounded-[5px_5px_5px_5px] p-1 w-52 mb-5'
+                <select className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                   type='text'
                   {...register('id_mecanico_id', {
                     required: {
@@ -226,9 +226,17 @@ function RegistroTrabajo() {
               </div>
             </div>
             <div className="flex justify-center">
+            <div className="flex justify-center gap-6">
+              <Link to={'/Servicios'}><button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
+                Regresar
+              </button></Link>
               <button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
-                Agregar
+                Confirmar trabajo
               </button>
+              <Link to={'/Trabajos'}><button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
+                Ver trabajos
+              </button></Link>
+            </div>
             </div>
           </fieldset>
         </form>

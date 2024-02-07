@@ -1,166 +1,267 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from '../api/axios';
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import axios from 'axios';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 function Actualizar() {
+    const [trabajo, setTrabajo] = useState([]);
+    const [mecanico, setMecanico] = useState([]);
+    const [desc, setDesc] = useState([]);
+    const [vehiculo, setVehiculo] = useState([]);
+    const [hora, setHora] = useState([]);
+    const [status, setStatus] = useState([]);
+    const [pintura, setPintura] = useState([]);
+    const [pieza, setPieza] = useState([]);
+    const [fijo, setFijo] = useState([]);
+    const [total, setTotal] = useState([]);
+
     const { id_trabajo } = useParams();
-    const [trabajoData, setTrabajoData] = useState(null);
-    const [mecanicoData, setMecanicoData] = useState(null);
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        axios.get(`/trabajo/${id_trabajo}`)
-            .then(response => {
-                setTrabajoData(response.data);
-                axios.get(`/mecanico/${response.data.id_mecanico_id}`)
-                    .then(mecanicoResponse => {
-                        setMecanicoData(mecanicoResponse.data);
-                    })
-                    .catch(mecanicoError => {
-                        console.error(`Error al obtener datos del mecánico con ID ${response.data.id_mecanico_id}:`, mecanicoError);
-                    });
-            })
-            .catch(error => {
-                console.error(`Error al obtener datos del trabajo con id ${id_trabajo}:`, error);
-            });
-    }, [id_trabajo]);
+    const { setValue, handleSubmit, register, formState: { error } } = useForm();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setTrabajoData(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
+
+    const fetchId = async (values) => {
+        try {
+            const response = await axios.get(`https://localhost:3000/trabajo/${id_trabajo}`);
+            setTrabajo(response.data);
+            console.log(response.data);
+
+            setValue('id_mecanico_id', response.data.id_mecanico_id);
+            setValue('descripcion_revision', response.data.descripcion_revision);
+            setValue('modelo_vehiculo', response.data.modelo_vehiculo);
+            setValue('horas', response.data.horas);
+            setValue('tipo_estatus', response.data.tipo_estatus);
+            setValue('nombre_pintura', response.data.nombre_pintura);
+            setValue('nombre_de_pieza', response.data.nombre_de_pieza);
+            setValue('precio_fijo_trabajo', response.data.precio_fijo_trabajo);
+            setValue('precio_total_trabajo', response.data.precio_total_trabajo);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.put(`/trabajo/${id_trabajo}`, trabajoData)
-            .then(response => {
-                console.log('Datos actualizados con éxito:', response.data);
-                navigate('/Trabajos')
-            })
-            .catch(error => {
-                console.error('Error al actualizar los datos:', error);
-            });
+    const fetchMecanico = async () => {
+        try {
+            const response = await axios.get('https://localhost:3000/mecanico');
+            setMecanico(response.data)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const fetchDescrip = async () => {
+        try {
+            const response = await axios.get('https://localhost:3000/trabajo');
+            setDesc(response.data)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const fetchHora = async () => {
+        try {
+            const response = await axios.get('https://localhost:3000/trabajo');
+            setHora(response.data)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const fetchStatus = async () => {
+        try {
+            const response = await axios.get('https://localhost:3000/estado');
+            setStatus(response.data)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const fetchPintura = async () => {
+        try {
+            const response = await axios.get('https://localhost:3000/pintura');
+            setPintura(response.data)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const fetchPieza = async () => {
+        try {
+            const response = await axios.get('https://localhost:3000/pieza');
+            setPieza(response.data)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const fetchFijo = async () => {
+        try {
+            const response = await axios.get('https://localhost:3000/trabajo');
+            setFijo(response.data)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const fetchTotal = async () => {
+        try {
+            const response = await axios.get('https://localhost:3000/trabajo');
+            setTotal(response.data)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchMecanico();
+        fetchDescrip();
+        fetchVehiculo();
+        fetchFijo();
+        fetchHora();
+        fetchPieza();
+        fetchPintura();
+        fetchStatus();
+        fetchTotal();
+        fetchId();
+    }, [])
+
+    const fetchVehiculo = async () => {
+        try {
+            const response = await axios.get('https://localhost:3000/trabajo');
+            setVehiculo(response.data)
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
         <>
-            <h1 className='text-center font-semibold text-4xl mt-2'>ACTUALIZAR TRABAJO</h1>
-            {trabajoData && mecanicoData && (
-                <form className="flex flex-col max-w-lg mx-auto my-8" onSubmit={handleSubmit}>
+            <div className='flex items-center justify-center'>
+                <form onSubmit={handleSubmit((values) => {
+                    console.log(values);
+                    axios.put(`https://localhost:3000/trabajo/${id_trabajo}`, values)
+                        .then(response => {
+                            console.log(response.data);
+                            navigate("/Trabajos");
+                        })
+                        .catch(error => {
+                            console.error(error.response || error);
+                        });
+                })} className='w-[600px] p-5'  >
+
+
                     <fieldset className="border border-red-500 p-4 rounded-[7px_7px_7px_7px]">
-                        <legend className="text-xl font-semibold text-gray-700">ACTUALIZAR</legend>
+                        <legend className="text-xl font-semibold text-gray-700">EDITAR TRABAJO</legend>
                         <div className="flex flex-wrap -mx-2">
                             <div className="w-1/2 px-1">
-                                <label htmlFor="mecanico">Mecánico</label>
-                                <input
-                                    id="mecanico"
-                                    name="mecanico"
-                                    value={mecanicoData.nombre}
-                                    readOnly
-                                    className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-                                />
-                                <label htmlFor="pintura">Pintura</label>
-                                <input
-                                    id="nombre_pintura"
-                                    name="nombre_pintura"
-                                    placeholder="Ingrese pintura"
-                                    type="text"
-                                    value={trabajoData.nombre_pintura}
-                                    onChange={handleChange}
-                                    className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-                                />
-                                <label htmlFor="estadoTrabajo">Pieza </label>
-                                <input
-                                    id="nombre_de_pieza"
-                                    name="nombre_de_pieza"
-                                    placeholder="Ingrese la pieza"
-                                    type="text"
-                                    value={trabajoData.nombre_de_pieza}
-                                    onChange={handleChange}
-                                    className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-                                />
-                                <label htmlFor="estadoTrabajo">Descripcion del trabajo </label>
+                                <label className='my-2 font-medium'>Mecánico</label>
+                                <select className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                                    type='text'
+                                    {...register('id_mecanico_id', {
+                                        required: {
+                                            value: true,
+                                            message: 'Mecánico es necesario',
+                                        }
+                                    })}
+                                >
+                                    {' '}
+                                    {mecanico.map((mecha, index) => (
+                                        <option className='text-black' key={index} value={mecha.id_mecanico}>{mecha.nombre}</option>
+                                    ))}
+
+                                </select>
+
+                                <label>Descripcion</label>
                                 <textarea
-                                    id="descripcion_revision"
-                                    name="descripcion_revision"
-                                    placeholder="Descripción del trabajo"
-                                    type="text"
-                                    value={trabajoData.descripcion_revision}
-                                    onChange={handleChange}
-                                    className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4 h-24"
+                                    name='descripcion_revision'
+                                    type='text'
+                                    {...register('descripcion_revision', { required: { value: true, message: 'Descripcion necesario' } })}
+                                    className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 />
-                                <label htmlFor="">Modelo del Vehiculo </label>
+
+                                <label>Vehiculo</label>
                                 <input
-                                    id="modelo_vehiculo"
-                                    name="modelo_vehiculo"
-                                    placeholder="Modelo del vehículo"
+                                    name='modelo_vehiculo'
+                                    placeholder="Modelo del vehiculo"
                                     type="text"
-                                    value={trabajoData.modelo_vehiculo}
-                                    onChange={handleChange}
+                                    {...register('modelo_vehiculo', { required: { value: true, message: 'Precio necesario' } })}
+                                    className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                                />
+                                <label>
+                                    Horas
+                                </label>
+                                <input
+                                    name="horas"
+                                    type="text"
+                                    {...register('horas', { required: { value: true, message: 'Precio necesario' } })}
                                     className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 />
+                                <label>Estado del trabajo</label>
+                                <select
+                                    name='id_status_id'
+                                    type="text"
+                                    {...register('id_status_id', { required: { value: true, message: 'Precio necesario' } })}
+                                    className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
+                                >
+                                    {' '}
+                                    {status.map((estatus, index) => (
+                                        <option className='text-black' key={index} value={estatus.id_status}>{estatus.tipo_estatus}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="w-1/2 px-1">
-                                <label htmlFor="estadoTrabajo">Estado del trabajo</label>
+                                <label>Pintura</label>
                                 <select
-                                    id="estadoTrabajo"
-                                    name="estadoTrabajo"
-                                    value={trabajoData.estadoTrabajo}
-                                    onChange={handleChange}
+                                    name="nombre_pintura"
+                                    placeholder="Nombre de la pintura"
+                                    {...register('nombre_pintura', { required: { value: true, message: 'Precio necesario' } })}
                                     className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 >
-                                    <option>Pendiente</option>
-                                    <option>Completado</option>
+                                    {' '}
+                                    {pintura.map((paint, index) => (
+                                        <option className='text-black' key={index} value={paint.id_pintura}>{paint.color_pintura}</option>
+                                    ))}
                                 </select>
-                                <label htmlFor="horaTrabajo">Horas del trabajo</label>
-                                <input
-                                    id="horas"
-                                    name="horas"
-                                    placeholder="Horas de trabajo"
+                                <label>Pieza</label>
+                                <select
+                                    name="nombre_de_pieza"
                                     type="text"
-                                    value={trabajoData.horas}
-                                    onChange={handleChange}
+                                    {...register('nombre_de_pieza', { required: { value: true, message: 'Precio necesario' } })}
                                     className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
-                                />
-                                <label htmlFor="cosotFijo">Costo fijo</label>
+                                >
+                                    {' '}
+                                    {pieza.map((pieces, index) => (
+                                        <option className='text-black' key={index} value={pieces.id_pieza}>{pieces.nombre_pieza}</option>
+                                    ))}
+                                </select>
+                                <label>Costo fijo</label>
                                 <input
-                                    id="precio_fijo_trabajo"
                                     name="precio_fijo_trabajo"
                                     placeholder="Costo fijo"
                                     type="text"
-                                    value={trabajoData.precio_fijo_trabajo}
-                                    onChange={handleChange}
+                                    {...register('precio_fijo_trabajo', { required: { value: true, message: 'Precio necesario' } })}
                                     className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 />
-                                <label htmlFor="horaTrabajo">Precio total</label>
+                                <label>Precio total</label>
                                 <input
                                     name="precio_total_trabajo"
-                                    id="precio_total_trabajo"
-                                    placeholder="Costo Total"
                                     type="text"
-                                    value={trabajoData.precio_total_trabajo}
-                                    onChange={handleChange}
+                                    {...register('precio_total_trabajo', { required: { value: true, message: 'Precio necesario' } })}
                                     className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-center">
-                            <button
-                                className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48"
-                                type="submit"
-                            >
+                        <div className="flex justify-center gap-6">
+                            <Link to={'/Trabajos'}>
+                                <button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
+                                    Regresar
+                                </button>
+                            </Link>
+                            <button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
                                 Actualizar
                             </button>
                         </div>
                     </fieldset>
                 </form>
-            )}
+            </div>
         </>
-    );
+    )
 }
 
 export default Actualizar;

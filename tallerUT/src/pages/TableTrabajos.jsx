@@ -47,7 +47,8 @@ function TabTrabajos() {
 
     return (
         <>
-            <div className="flex justify-center my-24 rounded-[7px_7px_7px_7px]">
+        <h1 className="text-center mt-7 mb-0 text-3xl font-semibold">TABLA DE TRABAJOS</h1>
+            <div className="flex justify-center mt-12 mb-8 rounded-[7px_7px_7px_7px]">
                 <table>
                     <thead className="border-red-500 bg-red-500 text-white rounded-[7px_7px_7px_7px]">
                         <tr>
@@ -73,7 +74,7 @@ function TabTrabajos() {
                                 <td className="border border-red-500 p-2 shadow-md">{works.descripcion_revision}</td>
                                 <td className="border border-red-500 p-2 shadow-md">{works.modelo_vehiculo}</td>
                                 <td className="border border-red-500 p-1 shadow-md">{works.horas}</td>
-                                <td className="border border-red-500 p-1 shadow-md">{works.tipo_estatus}</td>
+                                <td className="border border-red-500 p-1 shadow-md">{works.tipo_status}</td>
                                 <td className="border border-red-500 p-1 shadow-md">{works.nombre_pintura}</td>
                                 <td className="border border-red-500 p-1 shadow-md">{works.nombre_de_pieza}</td>
                                 <td className="border border-red-500 p-1 shadow-md">{works.precio_fijo_trabajo}</td>

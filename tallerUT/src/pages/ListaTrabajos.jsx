@@ -19,7 +19,7 @@ function VistaTrabajo() {
 
     return (
         <>
-            <h1 className="text-center mt-3 font-bold text-3xl">TRABAJOS PENDIENTES</h1>
+            <h1 className="text-center mt-5 mb-8 font-bold text-3xl">TRABAJOS PENDIENTES</h1>
             <div className="flex flex-wrap justify-center gap-7">
                 {trabajoData && trabajoData.map(trabajo => (
                     <CardsTrabajo
@@ -29,7 +29,8 @@ function VistaTrabajo() {
                         pinturas={trabajo.nombre_pintura}  
                         mecanico={trabajo.nombre_mecanico}  
                         horas={trabajo.horas}
-                        costo={trabajo.precio_total_trabajo} 
+                        costo={trabajo.precio_total_trabajo}
+                        estatus={trabajo.tipo_status}
                     />
                 ))}
             </div>

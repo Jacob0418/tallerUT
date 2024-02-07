@@ -1,7 +1,7 @@
 const db = require('../db');
 
 const obtenerTrabajo = (req, res) => {
-    db.query('SELECT t.id_trabajo, m.nombre AS nombre_mecanico, t.descripcion_revision, t.modelo_vehiculo, t.horas, e.tipo_estatus, p.color_pintura AS nombre_pintura, pz.nombre_pieza AS nombre_de_pieza, t.precio_fijo_trabajo, t.precio_total_trabajo FROM trabajos t INNER JOIN mecanico m ON t.id_mecanico_id = m.id_mecanico INNER JOIN estatus e ON t.id_status_id = e.id_status INNER JOIN pintura p ON t.nombre_pintura = p.color_pintura INNER JOIN piezas pz ON t.nombre_de_pieza = pz.nombre_pieza;', (error, results) => {
+    db.query('SELECT t.id_trabajo, m.nombre AS nombre_mecanico, t.descripcion_revision, t.modelo_vehiculo, t.horas, e.tipo_estatus AS tipo_status, p.color_pintura AS nombre_pintura, z.nombre_pieza AS nombre_de_pieza, t.precio_fijo_trabajo, t.precio_total_trabajo FROM trabajos t INNER JOIN mecanico m ON t.id_mecanico_id = m.id_mecanico INNER JOIN estatus e ON t.id_status_id = e.id_status INNER JOIN pintura p ON t.nombre_pintura = p.id_pintura INNER JOIN piezas z ON t.nombre_de_pieza = z.id_pieza;', (error, results) => {
         if (error) {
             console.error('Error al obtener trabajo', error);
             res.status(500).json({
