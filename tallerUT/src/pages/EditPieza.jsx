@@ -8,7 +8,6 @@ function EditPieza() {
     const navigate = useNavigate();
 
     const {id_pieza} = useParams();
-    //console.log(id_pieza);
 
     const { handleSubmit, register, setValue, formState: { errors } } = useForm();
     const [pieza, setPieza] = useState(null);

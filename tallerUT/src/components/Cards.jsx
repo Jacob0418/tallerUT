@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function CardsTrabajo({ id_trabajo, tipo, pinturas, mecanico, horas, costo }) {
+    
     return (
         <>
             <div className="border-[3px] border-red-500 w-80 h-72 rounded-[7px_7px_7px_7px] bg-white">

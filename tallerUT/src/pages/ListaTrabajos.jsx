@@ -15,6 +15,8 @@ function VistaTrabajo() {
             });
     }, []);
 
+
+
     return (
         <>
             <h1 className="text-center mt-3 font-bold text-3xl">TRABAJOS PENDIENTES</h1>

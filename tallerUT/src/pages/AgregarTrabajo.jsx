@@ -124,22 +124,6 @@ function AgregarTrabajo() {
                     }
                 })} className='w-[600px] p-5'  >
 
-                    {/* <label className='my-2 font-medium'>Mecánico</label>
-                    <select className='border-none focus:outline-red-500 focus:outline-none rounded-[5px_5px_5px_5px] p-1 w-52 mb-5'
-                        type='text'
-                        {...register('id_mecanico_id', {
-                            required: {
-                                value: true,
-                                message: 'Pieza es necesaria',
-                            }
-                        })}
-                    >
-                        {' '}
-                        {mecanico.map((piece, index) => (
-                            <option className='text-black' key={index} value={piece.id_mecanico}>{piece.nombre}</option>
-                        ))}
-
-                    </select> */}
 
                     <fieldset className="border border-red-500 p-4 rounded-[7px_7px_7px_7px]">
                         <legend className="text-xl font-semibold text-gray-700">CREAR</legend>

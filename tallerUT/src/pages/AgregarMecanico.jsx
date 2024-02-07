@@ -5,16 +5,11 @@ import { useNavigate } from 'react-router-dom';
 
 function AgregarMecanico() {
 
-    // const [nombre, setNombre] = useState([]);
-    // const [apellido, setApellido] = useState([]);
-    // const [email, setEmail] = useState([]);
-    // const [nomina, setNomina] = useState([]);
-    // const [telef, setTelef] = useState([]);
 
     const navigate = useNavigate();
 
     const { handleSubmit, register, formState: { error } } = useForm();
-    //console.log(error);
+
 
     const onSubmit = async (data) => {
         {

@@ -8,7 +8,6 @@ function EditMecanico() {
     const navigate = useNavigate();
 
     const { id_mecanico } = useParams();
-    //console.log(id_pieza);
 
     const { handleSubmit, register, setValue, formState: { errors } } = useForm();
     const [mecanico, setMecanico] = useState(null);

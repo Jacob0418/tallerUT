@@ -5,11 +5,10 @@ import axios from "../api/axios";
 function ActualizarReparacion() {
   const { id_reparacion } = useParams();
   const [reparacionData, setReparacionData] = useState(null);
-  const [materiales, setMateriales] = useState([]); // Lista de materiales
-  const [estados, setEstados] = useState([]); // Lista de estados
+  const [materiales, setMateriales] = useState([]); 
+  const [estados, setEstados] = useState([]); 
 
   useEffect(() => {
-    // Obtener datos de la reparación
     axios
       .get(`/reparacion/${id_reparacion}`)
       .then((response) => {
@@ -22,7 +21,7 @@ function ActualizarReparacion() {
         );
       });
 
-    // Obtener lista de materiales
+
     axios
       .get("/material")
       .then((response) => {
@@ -32,7 +31,7 @@ function ActualizarReparacion() {
         console.error("Error al obtener la lista de materiales:", error);
       });
 
-    // Obtener lista de estados
+
     axios
       .get("/estado")
       .then((response) => {

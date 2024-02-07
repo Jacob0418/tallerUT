@@ -79,8 +79,6 @@ const loginMecanico = (req, res) => {
             const mecanico = results[0];
 
             const correctPassword = bcrypt.compare(password, mecanico.password);
-            // console.log("Contraseña recibida:", password);
-            // console.log("Hash de contraseña en DB:", mecanico.password);
 
 
             if (correctPassword) {

@@ -4,7 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../api/context/AuthContext';
 
 const PrivateRoutes = () => {
-  const { isAuthenticatedMecanico } = useAuth(); // Asegúrate de que este es el método correcto para verificar la autenticación
+  const { isAuthenticatedMecanico } = useAuth(); 
 
   return isAuthenticatedMecanico ? <Outlet /> : <Navigate to="/LogIn"  replace/>;
 };

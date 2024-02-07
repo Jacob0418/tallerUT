@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const loginReqAdmin = async (adminData) => {
     try {
       const res = await loginAdmin(adminData);
-      Cookies.set("token", res.data.token); // Asumiendo que res.data contiene un token
+      Cookies.set("token", res.data.token); 
       setIsAuthenticatedAdmin(true);
       setAdmin(res.data);
       setError([]);
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   const loginReqMecanico = async (mecanicoData) => {
     try {
       const res = await loginMecanico(mecanicoData);
-      Cookies.set("token", res.data.token); // Asumiendo que res.data contiene un token
+      Cookies.set("token", res.data.token); 
       setIsAuthenticatedMecanico(true);
       setMecanico(res.data);
       setError([]);

@@ -30,7 +30,6 @@ function TabPieza() {
 
     const handleEdit = (id) => {
         navigate(`/EditarPieza/${id}`)
-        //console.log('Editar', id);
     };
 
     const handleDelete = (id) => {

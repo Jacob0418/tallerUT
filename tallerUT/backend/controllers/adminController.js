@@ -1,6 +1,6 @@
 const db = require('../db');
 const bcrypt = require('bcrypt');
-//const { use } = require('bcrypt/promises');
+
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 

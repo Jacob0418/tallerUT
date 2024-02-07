@@ -13,8 +13,6 @@ const obtenerTrabajo = (req, res) => {
     });
 }
 
-
-
 const obtenerTrabajocoById = (req, res) => {
     const id = req.params.id;
 

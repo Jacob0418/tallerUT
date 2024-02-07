@@ -12,7 +12,7 @@ function AgregarMaterial() {
     const navigate = useNavigate();
 
     const { handleSubmit, register, formState: { error } } = useForm();
-    //console.log(error);
+
 
     const fetchPieza = async () => {
         try {

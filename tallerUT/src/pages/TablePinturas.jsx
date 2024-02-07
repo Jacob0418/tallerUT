@@ -30,7 +30,6 @@ function TabPintura() {
 
     const handleEdit = (id) => {
         navigate(`/EditarPintura/${id}`)
-        //console.log('Editar', id);
     };
 
     const handleDelete = (id) => {

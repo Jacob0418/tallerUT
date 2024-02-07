@@ -11,11 +11,10 @@ function RegistroReparacion() {
     descripcion_reparacion: "",
     precio_reparacion: "",
   });
-  const [materiales, setMateriales] = useState([]); // Lista de materiales
-  const [estados, setEstados] = useState([]); // Lista de estados
+  const [materiales, setMateriales] = useState([]); 
+  const [estados, setEstados] = useState([]); 
 
   useEffect(() => {
-    // Obtener lista de materiales
     axios.get('/material')
       .then(response => {
         setMateriales(response.data);
@@ -24,7 +23,6 @@ function RegistroReparacion() {
         console.error('Error al obtener la lista de materiales:', error);
       });
 
-    // Obtener lista de estados
     axios.get('/estado')
       .then(response => {
         setEstados(response.data);
@@ -45,15 +43,14 @@ function RegistroReparacion() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Convertir el nombre del material a su ID correspondiente
     const materialSeleccionado = materiales.find(m => m.nombre_pieza === reparacionData.id_material_id);
     const idMaterial = materialSeleccionado ? materialSeleccionado.id_material : null;
 
-    // Convertir el nombre del estado a su ID correspondiente
+ 
     const estadoSeleccionado = estados.find(e => e.tipo_estatus === reparacionData.id_estatus_id);
     const idEstatus = estadoSeleccionado ? estadoSeleccionado.id_status : null;
 
-    // Actualizar los datos con los IDs correspondientes
+   
     const datosActualizados = {
       ...reparacionData,
       id_material_id: idMaterial,
@@ -63,7 +60,7 @@ function RegistroReparacion() {
     axios.post("/reparacion", datosActualizados)
       .then((response) => {
         console.log("Reparación registrada con éxito:", response.data);
-        // Puedes realizar acciones después de registrar la reparación, como redirigir al usuario a otra página
+       
       })
       .catch((error) => {
         console.error("Error al registrar la reparación:", error);

@@ -8,7 +8,6 @@ function EditPintura() {
     const navigate = useNavigate();
 
     const {id_pintura} = useParams();
-    //console.log(id_pieza);
 
     const { handleSubmit, register, setValue, formState: { errors } } = useForm();
     const [pintura, setPintura] = useState(null);
