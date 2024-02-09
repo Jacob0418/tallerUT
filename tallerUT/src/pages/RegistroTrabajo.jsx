@@ -1,85 +1,53 @@
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
 function RegistroTrabajo() {
   const [mecanico, setMecanico] = useState([]);
-  const [desc, setDesc] = useState([]);
-  const [vehiculo, setVehiculo] = useState([]);
-  const [hora, setHora] = useState([]);
   const [status, setStatus] = useState([]);
   const [pintura, setPintura] = useState([]);
   const [pieza, setPieza] = useState([]);
-  const [fijo, setFijo] = useState([]);
-  const [total, setTotal] = useState([]);
-
   const navigate = useNavigate();
 
-  const { handleSubmit, register, formState: { error } } = useForm();
-  //console.log(error);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    setError
+  } = useForm();
 
   const fetchMecanico = async () => {
     try {
       const response = await axios.get('https://localhost:3000/mecanico');
-      setMecanico(response.data)
+      setMecanico(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const fetchDescrip = async () => {
-    try {
-      const response = await axios.get('https://localhost:3000/trabajo');
-      setDesc(response.data)
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const fetchHora = async () => {
-    try {
-      const response = await axios.get('https://localhost:3000/trabajo');
-      setHora(response.data)
-    } catch (error) {
-      console.error(error);
-    }
-  };
   const fetchStatus = async () => {
     try {
       const response = await axios.get('https://localhost:3000/pieza/status');
-      setStatus(response.data)
+      setStatus(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+
   const fetchPintura = async () => {
     try {
       const response = await axios.get('https://localhost:3000/pintura');
-      setPintura(response.data)
+      setPintura(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+
   const fetchPieza = async () => {
     try {
       const response = await axios.get('https://localhost:3000/pieza');
-      setPieza(response.data)
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const fetchFijo = async () => {
-    try {
-      const response = await axios.get('https://localhost:3000/trabajo');
-      setFijo(response.data)
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const fetchTotal = async () => {
-    try {
-      const response = await axios.get('https://localhost:3000/trabajo');
-      setTotal(response.data)
+      setPieza(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -87,43 +55,44 @@ function RegistroTrabajo() {
 
   useEffect(() => {
     fetchMecanico();
-    fetchDescrip();
-    fetchVehiculo();
-    fetchFijo();
-    fetchHora();
-    fetchPieza();
     fetchPintura();
+    fetchPieza();
     fetchStatus();
-    fetchTotal();
-  }, [])
+  }, []);
 
-  const fetchVehiculo = async () => {
+  const onSubmit = async (values) => {
     try {
-      const response = await axios.get('https://localhost:3000/trabajo');
-      setVehiculo(response.data)
+      const fieldsToCheck = ['descripcion_revision', 'modelo_vehiculo', 'horas', 'precio_fijo_trabajo', 'precio_total_trabajo'];
+
+      fieldsToCheck.forEach(field => {
+        if (!validateSpecialCharacters(values[field])) {
+          setError(field, {
+            type: "manual",
+            message: "No se puede registrar el trabajo porque tiene caracteres especiales"
+          });
+          return;
+        }
+      });
+
+      const response = await axios.post('https://localhost:3000/trabajo', values);
+      console.log(response.data);
+      navigate('/Trabajos');
     } catch (error) {
-      console.error(error);
+      console.error('Error al enviar la solicitud:', error);
     }
+  };
+
+  const validateSpecialCharacters = (value) => {
+    return /^[a-zA-Z0-9\s]*$/.test(value);
   };
 
   return (
     <>
       <div className='flex items-center justify-center'>
-        <form onSubmit={handleSubmit(async (values) => {
-          try {
-            const response = await axios.post(
-              "https://localhost:3000/trabajo",
-              values
-            );
-            console.log(response.data);
-            navigate("/Trabajos");
-          } catch (error) {
-            console.error("Error al enviar la solicitud:", error);
-          }
-        })} className='w-[600px] p-5'  >
-
-          
-
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className='w-[600px] p-5'
+        >
           <fieldset className="border border-red-500 p-4 rounded-[7px_7px_7px_7px]">
             <legend className="text-xl font-semibold text-gray-700">CREAR TRABAJO</legend>
             <div className="flex flex-wrap -mx-2">
@@ -134,15 +103,13 @@ function RegistroTrabajo() {
                   {...register('id_mecanico_id', {
                     required: {
                       value: true,
-                      message: 'Pieza es necesaria',
+                      message: 'Mecánico es necesario',
                     }
                   })}
                 >
-                  {' '}
                   {mecanico.map((mecha, index) => (
                     <option className='text-black' key={index} value={mecha.id_mecanico}>{mecha.nombre}</option>
                   ))}
-
                 </select>
 
                 <label>Descripcion</label>
@@ -152,24 +119,29 @@ function RegistroTrabajo() {
                   {...register('descripcion_revision', { required: { value: true, message: 'Descripcion necesario' } })}
                   className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                 />
+                {errors.descripcion_revision && <p className="text-red-500">{errors.descripcion_revision.message}</p>}
 
                 <label>Vehiculo</label>
                 <input
                   name='modelo_vehiculo'
                   placeholder="Modelo del vehiculo"
                   type="text"
-                  {...register('modelo_vehiculo', { required: { value: true, message: 'Precio necesario' } })}
+                  {...register('modelo_vehiculo', { required: { value: true, message: 'Vehículo necesario' } })}
                   className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                 />
+                {errors.modelo_vehiculo && <p className="text-red-500">{errors.modelo_vehiculo.message}</p>}
+
                 <label>
                   Horas
                 </label>
                 <input
                   name="horas"
                   type="text"
-                  {...register('horas', { required: { value: true, message: 'Precio necesario' } })}
+                  {...register('horas', { required: { value: true, message: 'Horas necesario' } })}
                   className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                 />
+                {errors.horas && <p className="text-red-500">{errors.horas.message}</p>}
+
                 <label>Estado del trabajo</label>
                 <select
                   name='id_status_id'
@@ -177,7 +149,6 @@ function RegistroTrabajo() {
                   {...register('id_status_id', { required: { value: true, message: 'Precio necesario' } })}
                   className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                 >
-                  {' '}
                   {status.map((estatus, index) => (
                     <option className='text-black' key={index} value={estatus.id_status}>{estatus.tipo_estatus}</option>
                   ))}
@@ -191,7 +162,6 @@ function RegistroTrabajo() {
                   {...register('nombre_pintura', { required: { value: true, message: 'Precio necesario' } })}
                   className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                 >
-                  {' '}
                   {pintura.map((paint, index) => (
                     <option className='text-black' key={index} value={paint.id_pintura}>{paint.color_pintura}</option>
                   ))}
@@ -203,7 +173,6 @@ function RegistroTrabajo() {
                   {...register('nombre_de_pieza', { required: { value: true, message: 'Precio necesario' } })}
                   className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                 >
-                  {' '}
                   {pieza.map((pieces, index) => (
                     <option className='text-black' key={index} value={pieces.id_pieza}>{pieces.nombre_pieza}</option>
                   ))}
@@ -216,6 +185,7 @@ function RegistroTrabajo() {
                   {...register('precio_fijo_trabajo', { required: { value: true, message: 'Precio necesario' } })}
                   className="border focus:outline-none border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                 />
+                {errors.precio_fijo_trabajo && <p className="text-red-500">{errors.precio_fijo_trabajo.message}</p>}
                 <label>Precio total</label>
                 <input
                   name="precio_total_trabajo"
@@ -223,26 +193,31 @@ function RegistroTrabajo() {
                   {...register('precio_total_trabajo', { required: { value: true, message: 'Precio necesario' } })}
                   className="border focus:outline-none  border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-lg p-2 w-full mb-4"
                 />
+                {errors.precio_total_trabajo && <p className="text-red-500">{errors.precio_total_trabajo.message}</p>}
               </div>
             </div>
             <div className="flex justify-center">
-            <div className="flex justify-center gap-6">
-              <Link to={'/Servicios'}><button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
-                Regresar
-              </button></Link>
-              <button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
-                Confirmar trabajo
-              </button>
-              <Link to={'/Trabajos'}><button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
-                Ver trabajos
-              </button></Link>
-            </div>
+              <div className="flex justify-center gap-6">
+                <Link to={'/Servicios'}>
+                  <button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
+                    Regresar
+                  </button>
+                </Link>
+                <button type="submit" className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
+                  Confirmar trabajo
+                </button>
+                <Link to={'/Trabajos'}>
+                  <button className="mt-4 bg-red-500 hover:-translate-y-1 text-white font-medium py-2 px-4 rounded-lg w-48">
+                    Ver trabajos
+                  </button>
+                </Link>
+              </div>
             </div>
           </fieldset>
         </form>
       </div>
     </>
-  )
+  );
 }
 
 export default RegistroTrabajo;
