@@ -2,6 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function CardsTrabajo({ id_trabajo, tipo, pinturas, mecanico, horas, costo, estatus }) {
+
+    const handleUpdateClick = () => {
+        if (estatus === "Completado") {
+            alert("No se puede actualizar el trabajo porque está completado.");
+            return;
+        }
+        
+    };
     
     return (
         <>
@@ -14,7 +22,23 @@ function CardsTrabajo({ id_trabajo, tipo, pinturas, mecanico, horas, costo, esta
                 <p className="ml-2"><span className="font-medium text-lg">Costo:</span> ${costo}</p>
                 <p className="ml-2"><span className="font-medium text-lg">Estatus:</span> {estatus}</p>
                 <span className="flex flex-row gap-3 items-center justify-center mt-3">        
-                    <Link to={`/Actualizar/${id_trabajo}`}><button className="border-2 p-2 rounded-[5px_5px_5px_5px] border-red-500 bg-red-500 text-white font-medium hover:-translate-y-1">Actualizar</button></Link>
+                    {estatus !== "Completado" ? (
+                        <Link to={`/Actualizar/${id_trabajo}`}>
+                            <button 
+                                className="border-2 p-2 rounded-[5px_5px_5px_5px] border-red-500 bg-red-500 text-white font-medium hover:-translate-y-1"
+                            >
+                                Actualizar
+                            </button>
+                        </Link>
+                    ) : (
+                        <button 
+                            onClick={handleUpdateClick}
+                            disabled={true}
+                            className="border-2 p-2 rounded-[5px_5px_5px_5px] border-gray-300 bg-gray-300 text-gray-600 font-medium hover:-translate-y-1 cursor-not-allowed"
+                        >
+                            Actualizar
+                        </button>
+                    )}
                 </span>
             </div>
         </>
